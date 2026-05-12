@@ -40,6 +40,7 @@ import com.mgacreative.globaltrade.core.audit.ActionType
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductManagementScreen(
+    paddingValues: PaddingValues = PaddingValues(0.dp),
     productId: String? = null,
     onBackClick: () -> Unit
 ) {
@@ -122,33 +123,15 @@ fun ProductManagementScreen(
         }
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(if (existingProduct != null) "Product Edit" else "Add New Product", fontWeight = FontWeight.Bold, fontSize = 18.sp) }, // Changed to English for consistency
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri")
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color(0xFF0F172A),
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
-            )
-        }
-    ) { paddingValues ->
+    Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
         if (isLoading) {
-            Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
                     .verticalScroll(scrollState)
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)

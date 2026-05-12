@@ -55,7 +55,10 @@ import androidx.compose.ui.Alignment
 @Composable
 fun TradeBridgeNavGraph(
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onMenuClick: () -> Unit,
+    companyQuery: String,
+    sectorQuery: String
 ) {
     NavHost(
         navController = navController,
@@ -83,6 +86,9 @@ fun TradeBridgeNavGraph(
             
             if (userRole == null) {
                 MainHomeScreen(
+                    paddingValues = paddingValues,
+                    companyQuery = companyQuery,
+                    sectorQuery = sectorQuery,
                     onModuleClick = { module, category, ownerId ->
                         when (module) {
                             "Login" -> navController.navigate(Screen.Login.route)
@@ -123,6 +129,9 @@ fun TradeBridgeNavGraph(
                 }
             } else {
                 HomeDashboardScreen(
+                    paddingValues = paddingValues,
+                    companyQuery = companyQuery,
+                    sectorQuery = sectorQuery,
                     onModuleClick = { module, category, ownerId ->
                         when (module) {
                             "Showroom" -> {
@@ -182,6 +191,8 @@ fun TradeBridgeNavGraph(
             val category = backStackEntry.arguments?.getString("category")
             val ownerId = backStackEntry.arguments?.getString("ownerId")
             ShowroomScreen(
+                paddingValues = paddingValues,
+                onMenuClick = onMenuClick,
                 initialCategory = category,
                 initialOwnerId = ownerId,
                 onBackClick = { navController.popBackStack() },
@@ -300,6 +311,7 @@ fun TradeBridgeNavGraph(
         composable(Screen.EditProduct.route) { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
             ProductManagementScreen(
+                paddingValues = paddingValues,
                 productId = productId,
                 onBackClick = { navController.popBackStack() }
             )
@@ -359,7 +371,10 @@ fun TradeBridgeNavGraph(
             ConsultantScreen(onBack = { navController.popBackStack() })
         }
         composable(Screen.EconomicNews.route) {
-            EconomicNewsScreen(onBack = { navController.popBackStack() })
+            EconomicNewsScreen(
+                paddingValues = paddingValues,
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.CompanyMeeting.route) {
             CompanyMeetingScreen(

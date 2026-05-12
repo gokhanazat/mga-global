@@ -31,6 +31,23 @@ import com.mgacreative.globaltrade.ui.theme.Background
 import com.mgacreative.globaltrade.manager.getCurrentAppLanguage
 import com.mgacreative.globaltrade.manager.changeAppLanguage
 import com.mgacreative.globaltrade.manager.syncPlatformLocale
+import com.mgacreative.globaltrade.ui.components.GlobalSidebar
+import com.mgacreative.globaltrade.ui.components.LanguageSwitcher
+import androidx.compose.foundation.Image
+import com.mgacreative.globaltrade.openUrl
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +58,11 @@ fun App(initialLanguage: String = "tr") {
     val currentDestination = navBackStackEntry?.destination
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val onMenuClick: () -> Unit = { scope.launch { drawerState.open() } }
+
+    var companyQuery by remember { mutableStateOf("") }
+    var sectorQuery by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         val saved = getCurrentAppLanguage() ?: initialLanguage
@@ -126,95 +148,286 @@ fun App(initialLanguage: String = "tr") {
             LocalLayoutDirection provides layoutDirection
         ) {
             TradeBridgeTheme {
-                Scaffold(
-                    snackbarHost = { SnackbarHost(snackbarHostState) },
-                    topBar = {
-                        val isAdminScreen = currentDestination?.route?.startsWith("admin_") == true || 
-                                            currentDestination?.route == Screen.UserManagement.route || 
-                                            currentDestination?.route == Screen.RegistryManagement.route || 
-                                            currentDestination?.route == Screen.AuditLog.route ||
-                                            currentDestination?.route == Screen.AdminDashboard.route
-                        
-                        val noGlobalTopBarScreens = isHome || isLogin || isCompanyMeeting || 
-                                                   isCompanyProfile || isCompanySettings || 
-                                                   isProductManagement || isEditProduct || 
-                                                   isShowroom || isMainShowroom || 
-                                                   isProductDetail || isEconomicNews || 
-                                                   isAdminScreen
+                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                    val screenWidth = maxWidth
+                    val isWeb = screenWidth > 900.dp
 
-                        if (!noGlobalTopBarScreens) {
-                            CenterAlignedTopAppBar(
-                                title = { 
-                                    Text(
-                                        stringResource(currentDestination?.labelResId() ?: Res.string.app_name),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                },
-                                navigationIcon = {
-                                    if (navController.previousBackStackEntry != null) {
-                                        IconButton(onClick = { navController.popBackStack() }) {
-                                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.back))
+                    val isAdminScreen = currentDestination?.route?.startsWith("admin_") == true || 
+                                        currentDestination?.route == Screen.UserManagement.route || 
+                                        currentDestination?.route == Screen.RegistryManagement.route || 
+                                        currentDestination?.route == Screen.AuditLog.route ||
+                                        currentDestination?.route == Screen.AdminDashboard.route
+                    
+                    val noGlobalSidebarScreens = isLogin || isAdminScreen
+
+                    if (isWeb) {
+                        Row(modifier = Modifier.fillMaxSize()) {
+                            if (!noGlobalSidebarScreens) {
+                                GlobalSidebar(
+                                    companyQuery = companyQuery,
+                                    onCompanyQueryChange = { companyQuery = it },
+                                    sectorQuery = sectorQuery,
+                                    onSectorQueryChange = { sectorQuery = it },
+                                    onNavItemClick = { item ->
+                                        when(item) {
+                                            "Consultancy", "Education" -> navController.navigate(Screen.Login.route)
+                                            "Companies" -> navController.navigate(Screen.CompanyMeeting.route)
+                                            "Sectors" -> navController.navigate(Screen.Home.route)
+                                            else -> { /* Handle other items */ }
                                         }
-                                    }
-                                },
-                                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                                    containerColor = DarkNavy,
-                                    titleContentColor = Color.White,
-                                    navigationIconContentColor = Color.White
+                                    },
+                                    onItsoWebsiteClick = { openUrl("https://www.iskenderuntso.org.tr/") }
                                 )
+                            }
+                            
+                            Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                                AppScaffoldContent(
+                                    navController = navController,
+                                    currentDestination = currentDestination,
+                                    snackbarHostState = snackbarHostState,
+                                    companyQuery = companyQuery,
+                                    sectorQuery = sectorQuery,
+                                    isWeb = true,
+                                    isHome = isHome,
+                                    isLogin = isLogin,
+                                    isHelpCenter = isHelpCenter,
+                                    isCompanyMeeting = isCompanyMeeting,
+                                    isCompanyProfile = isCompanyProfile,
+                                    isCompanySettings = isCompanySettings,
+                                    isProductManagement = isProductManagement,
+                                    isEditProduct = isEditProduct,
+                                    isShowroom = isShowroom,
+                                    isMainShowroom = isMainShowroom,
+                                    isProductDetail = isProductDetail,
+                                    isEconomicNews = isEconomicNews,
+                                    isAdminScreen = isAdminScreen,
+                                    userRole = userRole,
+                                    currentLanguage = currentLanguage,
+                                    onLanguageChange = { currentLanguage = it },
+                                    onMenuClick = onMenuClick
+                                )
+                            }
+                        }
+                    } else {
+                        ModalNavigationDrawer(
+                            drawerState = drawerState,
+                            gesturesEnabled = !noGlobalSidebarScreens,
+                            drawerContent = {
+                                if (!noGlobalSidebarScreens) {
+                                    ModalDrawerSheet(
+                                        drawerContainerColor = DarkNavy,
+                                        drawerTonalElevation = 0.dp
+                                    ) {
+                                        GlobalSidebar(
+                                            companyQuery = companyQuery,
+                                            onCompanyQueryChange = { companyQuery = it },
+                                            sectorQuery = sectorQuery,
+                                            onSectorQueryChange = { sectorQuery = it },
+                                            onNavItemClick = { item ->
+                                                scope.launch { drawerState.close() }
+                                                when(item) {
+                                                    "Consultancy", "Education" -> navController.navigate(Screen.Login.route)
+                                                    "Companies" -> navController.navigate(Screen.CompanyMeeting.route)
+                                                    "Sectors" -> navController.navigate(Screen.Home.route)
+                                                    else -> { /* Handle others */ }
+                                                }
+                                            },
+                                            onItsoWebsiteClick = { 
+                                                scope.launch { drawerState.close() }
+                                                openUrl("https://www.iskenderuntso.org.tr/") 
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        ) {
+                            AppScaffoldContent(
+                                navController = navController,
+                                currentDestination = currentDestination,
+                                snackbarHostState = snackbarHostState,
+                                companyQuery = companyQuery,
+                                sectorQuery = sectorQuery,
+                                isWeb = false,
+                                isHome = isHome,
+                                isLogin = isLogin,
+                                isHelpCenter = isHelpCenter,
+                                isCompanyMeeting = isCompanyMeeting,
+                                isCompanyProfile = isCompanyProfile,
+                                isCompanySettings = isCompanySettings,
+                                isProductManagement = isProductManagement,
+                                isEditProduct = isEditProduct,
+                                isShowroom = isShowroom,
+                                isMainShowroom = isMainShowroom,
+                                isProductDetail = isProductDetail,
+                                isEconomicNews = isEconomicNews,
+                                isAdminScreen = isAdminScreen,
+                                userRole = userRole,
+                                currentLanguage = currentLanguage,
+                                onLanguageChange = { currentLanguage = it },
+                                onMenuClick = { scope.launch { drawerState.open() } }
                             )
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppScaffoldContent(
+    navController: androidx.navigation.NavHostController,
+    currentDestination: androidx.navigation.NavDestination?,
+    snackbarHostState: SnackbarHostState,
+    companyQuery: String,
+    sectorQuery: String,
+    isWeb: Boolean,
+    isHome: Boolean,
+    isLogin: Boolean,
+    isHelpCenter: Boolean,
+    isCompanyMeeting: Boolean,
+    isCompanyProfile: Boolean,
+    isCompanySettings: Boolean,
+    isProductManagement: Boolean,
+    isEditProduct: Boolean,
+    isShowroom: Boolean,
+    isMainShowroom: Boolean,
+    isProductDetail: Boolean,
+    isEconomicNews: Boolean,
+    isAdminScreen: Boolean,
+    userRole: com.mgacreative.globaltrade.core.auth.Role?,
+    currentLanguage: String,
+    onLanguageChange: (String) -> Unit,
+    onMenuClick: (() -> Unit)? = null
+) {
+    val scope = rememberCoroutineScope()
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            val noGlobalTopBarScreens = isLogin || isAdminScreen
+
+            if (!noGlobalTopBarScreens || isWeb || isHome) {
+                CenterAlignedTopAppBar(
+                    title = { 
+                        if (!isHome) {
+                            Text(
+                                stringResource(currentDestination?.labelResId() ?: Res.string.app_name),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        } else if (!isWeb) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Image(
+                                    painter = painterResource(Res.drawable.itso_global_logo),
+                                    contentDescription = "Logo",
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text("ITSO GLOBAL", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                     },
-                    bottomBar = {
-                        val noBottomBarScreens = isLogin || isCompanyMeeting || 
-                                               isCompanyProfile || isCompanySettings || 
-                                               isProductManagement || isEditProduct || 
-                                               isShowroom || isMainShowroom || 
-                                               isProductDetail || isEconomicNews
-                        
-                        if (!noBottomBarScreens && userRole != null) {
-                            NavigationBar(
-                                containerColor = Color.White,
-                                contentColor = MaterialTheme.colorScheme.primary,
-                                tonalElevation = 8.dp
-                            ) {
-                                Screen.items.forEach { screen ->
-                                    val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
-                                    NavigationBarItem(
-                                        icon = { Icon(screen.icon, contentDescription = stringResource(screen.title)) },
-                                        label = null,
-                                        alwaysShowLabel = false,
-                                        selected = selected,
-                                        onClick = {
-                                            navController.navigate(screen.route) {
-                                                popUpTo(navController.graph.findStartDestination().route ?: "") {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        },
-                                        colors = NavigationBarItemDefaults.colors(
-                                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                                            unselectedIconColor = Color.Gray,
-                                            unselectedTextColor = Color.Gray
-                                        )
+                    navigationIcon = {
+                        if (!isWeb && onMenuClick != null && isHome) {
+                            IconButton(onClick = onMenuClick) {
+                                Icon(Icons.Default.Menu, null)
+                            }
+                        } else if (navController.previousBackStackEntry != null) {
+                            IconButton(onClick = { navController.popBackStack() }) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.back))
+                            }
+                        }
+                    },
+                    actions = {
+                        if (!isLogin && !isAdminScreen) {
+                            if (isWeb && isHome) {
+                                LanguageSwitcher(
+                                    currentLanguage = currentLanguage,
+                                    onLanguageChange = { lang ->
+                                        scope.launch {
+                                            changeAppLanguage(lang)
+                                            onLanguageChange(lang)
+                                        }
+                                    }
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                            }
+                            
+                            if (userRole != null) {
+                                IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
+                                    Icon(Icons.Default.Person, contentDescription = "Profile")
+                                }
+                            } else {
+                                IconButton(onClick = { navController.navigate(Screen.Login.route) }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Person,
+                                        contentDescription = "Login",
+                                        tint = Color.White
                                     )
                                 }
                             }
                         }
-                    }
-                ) { paddingValues ->
-                    TradeBridgeNavGraph(
-                        navController = navController, 
-                        paddingValues = paddingValues
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = DarkNavy,
+                        titleContentColor = Color.White,
+                        navigationIconContentColor = Color.White,
+                        actionIconContentColor = Color.White
                     )
+                )
+            }
+        },
+        bottomBar = {
+            val noBottomBarScreens = isLogin || isCompanyMeeting || 
+                                   isCompanyProfile || isCompanySettings || 
+                                   isProductManagement || isEditProduct || 
+                                   isShowroom || isMainShowroom || 
+                                   isProductDetail || isEconomicNews
+            
+            // Web'de sidebar olduğu için bottom bar'ı sadece mobilde gösteriyoruz
+            if (!isWeb && !noBottomBarScreens && userRole != null) {
+                NavigationBar(
+                    containerColor = Color.White,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    tonalElevation = 8.dp
+                ) {
+                    Screen.items.forEach { screen ->
+                        val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+                        NavigationBarItem(
+                            icon = { Icon(screen.icon, contentDescription = stringResource(screen.title)) },
+                            label = null,
+                            alwaysShowLabel = false,
+                            selected = selected,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    popUpTo(navController.graph.findStartDestination().route ?: "") {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                unselectedIconColor = Color.Gray,
+                                unselectedTextColor = Color.Gray
+                            )
+                        )
+                    }
                 }
             }
         }
+    ) { paddingValues ->
+        TradeBridgeNavGraph(
+            navController = navController, 
+            paddingValues = paddingValues,
+            onMenuClick = onMenuClick ?: {},
+            companyQuery = companyQuery,
+            sectorQuery = sectorQuery
+        )
     }
 }
 

@@ -29,6 +29,9 @@ import itsohub.composeapp.generated.resources.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeDashboardScreen(
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    companyQuery: String = "",
+    sectorQuery: String = "",
     onModuleClick: (String, String?, String?) -> Unit = { _, _, _ -> },
     onLogout: () -> Unit = {},
     onPremiumPreviewToggle: (Boolean) -> Unit = {}
@@ -48,6 +51,9 @@ fun HomeDashboardScreen(
 
     if (showPremiumHome) {
         MainHomeScreen(
+            paddingValues = paddingValues,
+            companyQuery = companyQuery,
+            sectorQuery = sectorQuery,
             onModuleClick = { module, category, ownerId -> 
                 showPremiumHome = false
                 onModuleClick(module, category, ownerId)
@@ -71,55 +77,29 @@ fun HomeDashboardScreen(
             }
         }
     } else {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { 
-                        Text(
-                            stringResource(Res.string.global_trade_platform), 
-                            style = MaterialTheme.typography.titleLarge, 
-                            fontWeight = FontWeight.Bold 
-                        ) 
-                    },
-                    actions = {
-                        IconButton(onClick = onLogout) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Logout,
-                                contentDescription = "Logout",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = Color.White
-                    )
-                )
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            val screenWidth = maxWidth
+            val columns = when {
+                screenWidth < 600.dp -> 1
+                screenWidth < 1100.dp -> 2
+                else -> 3
             }
-        ) { paddingValues ->
-            BoxWithConstraints(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .background(MaterialTheme.colorScheme.background)
-            ) {
-                val screenWidth = maxWidth
-                val columns = when {
-                    screenWidth < 600.dp -> 1
-                    screenWidth < 1100.dp -> 2
-                    else -> 3
-                }
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(columns),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item(span = { GridItemSpan(columns) }) {
-                        WelcomeSection(companyName = companyName ?: stringResource(Res.string.welcome_member))
-                    }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(columns),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item(span = { GridItemSpan(columns) }) {
+                    WelcomeSection(companyName = companyName ?: stringResource(Res.string.welcome_member))
+                }
 
                     item(span = { GridItemSpan(columns) }) {
                         Text(
@@ -189,7 +169,6 @@ fun HomeDashboardScreen(
             }
         }
     }
-}
 
 @Composable
 fun WelcomeSection(companyName: String) {

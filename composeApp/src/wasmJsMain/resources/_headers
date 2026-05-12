@@ -1,16 +1,14 @@
-# Cloudflare Pages Headers for Wasm/Skia (SharedArrayBuffer support)
+# Cloudflare Pages Headers for Wasm/Skia support
 /*
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: require-corp
   Access-Control-Allow-Origin: *
 
-# Wasm files must be explicitly typed and allow cross-origin
+# Explicit types for Wasm and JS
 /*.wasm
   Content-Type: application/wasm
   Cross-Origin-Resource-Policy: cross-origin
-  Cache-Control: public, max-age=31536000, immutable
 
-# JS and MJS files
 /*.js
   Content-Type: application/javascript
   Access-Control-Allow-Origin: *
@@ -18,3 +16,4 @@
 /*.mjs
   Content-Type: application/javascript
   Access-Control-Allow-Origin: *
+

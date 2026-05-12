@@ -20,6 +20,7 @@ data class Announcement(
     val titleRu: String = "",
     val descriptionRu: String = "",
     val colorHex: String = "#4361EE",
+    val link: String = "",
     val active: Int = 1,
     val createdAt: Long = getNowMillis(),
     val expiresAt: Long? = null

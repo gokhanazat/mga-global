@@ -20,8 +20,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mgacreative.globaltrade.openUrl
+import com.mgacreative.globaltrade.getPlatform
+import com.mgacreative.globaltrade.Platform
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.ktor.http.Url
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -38,36 +41,64 @@ data class NewsItem(
 
 fun parseRss(xml: String): List<NewsItem> {
     val items = mutableListOf<NewsItem>()
-    val itemRegex = Regex("(?s)<item>(.*?)</item>")
+    val itemRegex = Regex("(?si)<item[^>]*>(.*?)</item>")
 
-    val titleRegex = Regex("(?s)<title>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</title>")
-    val linkRegex = Regex("(?s)<link>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</link>")
-    val descRegex = Regex("(?s)<description>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</description>")
-    val pubDateRegex = Regex("(?s)<pubDate>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</pubDate>")
-    val enclosureRegex = Regex("(?s)<enclosure[^>]+url=\"(.*?)\"")
-    val mediaRegex = Regex("(?s)<media:content[^>]+url=\"(.*?)\"")
-    val imgTagRegex = Regex("<img[^>]+src=\"(.*?)\"")
+    val titleRegex = Regex("(?si)<title[^>]*>(.*?)</title>")
+    val linkRegex = Regex("(?si)<link[^>]*>(.*?)</link>")
+    val descRegex = Regex("(?si)<description[^>]*>(.*?)</description>")
+    val pubDateRegex = Regex("(?si)<pubDate[^>]*>(.*?)</pubDate>")
+    val enclosureRegex = Regex("(?si)<enclosure[^>]+url=\"(.*?)\"")
+    val mediaRegex = Regex("(?si)<media:content[^>]+url=\"(.*?)\"")
+    val itemImageRegex = Regex("(?si)<image[^>]*>(.*?)</image>")
+    val imgTagRegex = Regex("(?si)<img[^>]+src=\"(.*?)\"")
+
+    fun String.cleanCData(): String {
+        return this.trim()
+            .replace(Regex("^<!\\[CDATA\\["), "")
+            .replace(Regex("\\]\\]>$"), "")
+            .trim()
+    }
 
     for (match in itemRegex.findAll(xml)) {
         val block = match.groupValues[1]
 
-        val title = titleRegex.find(block)?.groupValues?.get(1)?.trim()
+        val title = titleRegex.find(block)?.groupValues?.get(1)?.cleanCData()
             ?.replace("&amp;", "&")?.replace("&lt;", "<")?.replace("&gt;", ">")
+            ?.replace("&quot;", "\"")?.replace("&apos;", "'")?.replace("&#39;", "'")
+            ?.replace("&rsquo;", "'")?.replace("&lsquo;", "'")?.replace("&rdquo;", "\"")?.replace("&ldquo;", "\"")
             ?: continue
 
-        val link = linkRegex.find(block)?.groupValues?.get(1)?.trim() ?: ""
+        val link = linkRegex.find(block)?.groupValues?.get(1)?.cleanCData() ?: ""
 
-        val rawDesc = descRegex.find(block)?.groupValues?.get(1)?.trim() ?: ""
+        val rawDesc = descRegex.find(block)?.groupValues?.get(1)?.cleanCData() ?: ""
         
-        val imageUrl = enclosureRegex.find(block)?.groupValues?.get(1)?.trim()
-            ?: mediaRegex.find(block)?.groupValues?.get(1)?.trim()
-            ?: imgTagRegex.find(rawDesc)?.groupValues?.get(1)?.trim()
+        var imageUrl = (enclosureRegex.find(block)?.groupValues?.get(1)
+            ?: mediaRegex.find(block)?.groupValues?.get(1)
+            ?: itemImageRegex.find(block)?.groupValues?.get(1)
+            ?: imgTagRegex.find(rawDesc)?.groupValues?.get(1)
+            ?: imgTagRegex.find(block)?.groupValues?.get(1))
+            ?.cleanCData()
+            ?.trim()?.replace("\n", "")?.replace("\r", "")
+
+        // Göreceli URL'leri tam URL'ye dönüştürelim ve protokolü kontrol edelim
+        if (imageUrl != null) {
+            imageUrl = imageUrl.trim()
+            if (imageUrl.startsWith("//")) {
+                imageUrl = "https:$imageUrl"
+            } else if (imageUrl.startsWith("/")) {
+                imageUrl = "https://www.bloomberght.com$imageUrl"
+            }
+        }
+
+        if (imageUrl != null) {
+            println("EconomicNews extracted image: $imageUrl")
+        }
 
         val desc = rawDesc.replace(Regex("<[^>]+>"), "").trim()
             .replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+            .replace("&quot;", "\"").replace("&apos;", "'")
 
-        val pubDate = pubDateRegex.find(block)?.groupValues?.get(1)?.trim()
-            ?.replace("+0000", "")?.trim() ?: ""
+        val pubDate = pubDateRegex.find(block)?.groupValues?.get(1)?.cleanCData() ?: ""
 
         if (title.isNotEmpty()) {
             items.add(NewsItem(
@@ -82,59 +113,49 @@ fun parseRss(xml: String): List<NewsItem> {
     return items
 }
 
-fun String.encodeUrl(): String {
-    return this.replace(":", "%3A")
-        .replace("/", "%2F")
-        .replace("?", "%3F")
-        .replace("=", "%3D")
-        .replace("&", "%26")
-}
-
-fun extractContentsFromJson(json: String): String {
-    val regex = Regex("\"contents\"\\s*:\\s*\"(.*)\"", RegexOption.DOT_MATCHES_ALL)
-    val match = regex.find(json)
-    val content = match?.groupValues?.get(1) ?: json
-    
-    // Unescape JSON string
-    return content.replace("\\n", "\n")
-        .replace("\\t", "\t")
-        .replace("\\\"", "\"")
-        .replace("\\\\", "\\")
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EconomicNewsScreen(
+    paddingValues: PaddingValues = PaddingValues(0.dp),
     onBack: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     var newsList by remember { mutableStateOf<List<NewsItem>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
+    var retryCount by remember { mutableStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        scope.launch {
+    LaunchedEffect(retryCount) {
+        try {
+            isLoading = true
+            error = null
+            
+            val rssFeedUrl = "https://www.bloomberght.com/rss"
+            val isWeb = getPlatform().name.lowercase().contains("web")
+            val finalUrl = if (isWeb) {
+                "https://api.codetabs.com/v1/proxy?quest=$rssFeedUrl"
+            } else {
+                rssFeedUrl
+            }
+            
+            val client = HttpClient()
             try {
-                val client = HttpClient()
-                val targetUrl = "https://tr.investing.com/rss/news_285.rss"
-                val proxyUrl = "https://api.allorigins.win/get?url=${targetUrl.encodeUrl()}"
-                
-                val response: HttpResponse = client.get(proxyUrl) {
+                val response: HttpResponse = client.get(finalUrl) {
                     headers {
-                        append(HttpHeaders.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                        append(HttpHeaders.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                        append("Referer", "https://www.bloomberght.com/")
                     }
                 }
-                
-                val jsonResponse = response.bodyAsText()
-                val xml = extractContentsFromJson(jsonResponse)
-                
+                val xml = response.bodyAsText()
                 newsList = parseRss(xml)
-                client.close()
-            } catch (e: Exception) {
-                error = "Haberer yüklenemedi: ${e.message}"
             } finally {
-                isLoading = false
+                client.close()
             }
+        } catch (e: Exception) {
+            error = "Haberler yüklenemedi: ${e.message}"
+        } finally {
+            isLoading = false
         }
     }
 
@@ -143,7 +164,7 @@ fun EconomicNewsScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Economic News",
+                        "Ekonomi Haberleri",
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -184,7 +205,7 @@ fun EconomicNewsScreen(
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
-                                    "Investing.com haberleri yükleniyor...",
+                                    "Bloomberg HT haberleri yükleniyor...",
                                     color = Color.Gray,
                                     fontSize = 14.sp
                                 )
@@ -207,8 +228,17 @@ fun EconomicNewsScreen(
                                 Text(
                                     error ?: "",
                                     color = Color.Gray,
-                                    style = MaterialTheme.typography.bodyMedium
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
                                 )
+                                Spacer(modifier = Modifier.height(24.dp))
+                                Button(
+                                    onClick = { retryCount++ },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F172A)),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Text("Tekrar Dene")
+                                }
                             }
                         }
                     }
@@ -263,85 +293,65 @@ fun NewsListCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE2E8F0))
     ) {
-        Column {
-            if (!newsItem.imageUrl.isNullOrBlank()) {
-                KamelImage(
-                    resource = asyncPainterResource(data = newsItem.imageUrl),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-                    contentScale = ContentScale.Crop,
-                    onLoading = { 
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { 
-                            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(24.dp)) 
-                        } 
-                    },
-                    onFailure = { /* Resim yüklenemezse boş kalsın */ }
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(4.dp),
+                    color = Color(0xFF1E293B).copy(alpha = 0.05f)
+                ) {
+                    Text(
+                        "BLOOMBERG",
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color(0xFF475569)
+                    )
+                }
+                
+                Text(
+                    text = newsItem.pubDate,
+                    fontSize = 10.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Medium
                 )
             }
             
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = Color(0xFF1E293B).copy(alpha = 0.05f)
-                    ) {
-                        Text(
-                            "INVESTING",
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Black,
-                            color = Color(0xFF475569)
-                        )
-                    }
-                    
-                    Text(
-                        text = newsItem.pubDate,
-                        fontSize = 10.sp,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = newsItem.title,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = Color(0xFF0F172A),
+                lineHeight = 24.sp
+            )
+            
+            if (newsItem.description.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = newsItem.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFF0F172A),
-                    lineHeight = 22.sp
-                )
-                
-                if (newsItem.description.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = newsItem.description,
-                        fontSize = 13.sp,
-                        color = Color(0xFF64748B),
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                        lineHeight = 18.sp
-                    )
-                }
-                
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = "Haberin Devamı →",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF3B82F6)
+                    text = newsItem.description,
+                    fontSize = 14.sp,
+                    color = Color(0xFF64748B),
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 20.sp
                 )
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Haberin Devamı →",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF3B82F6)
+            )
         }
     }
 }

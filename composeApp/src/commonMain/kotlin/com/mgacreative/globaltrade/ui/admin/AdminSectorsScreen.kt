@@ -1,4 +1,4 @@
-﻿package com.mgacreative.globaltrade.ui.admin
+package com.mgacreative.globaltrade.ui.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -99,6 +99,20 @@ fun AdminSectorsScreen(
                         actionIconContentColor = Color.White
                     )
                 )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { 
+                        currentSector = null
+                        sectorName = ""
+                        groupNo = ""
+                        showDialog = true 
+                    },
+                    containerColor = Color(0xFF0F172A),
+                    contentColor = Color.White
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Ekle")
+                }
             }
         ) { innerPadding ->
             if (isLoading) {

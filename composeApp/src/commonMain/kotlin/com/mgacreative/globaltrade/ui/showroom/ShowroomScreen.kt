@@ -44,6 +44,8 @@ import com.mgacreative.globaltrade.core.audit.ActionType
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowroomScreen(
+    paddingValues: PaddingValues = PaddingValues(0.dp),
+    onMenuClick: () -> Unit = {},
     initialCategory: String? = null,
     initialOwnerId: String? = null,
     onBackClick: () -> Unit = {},
@@ -94,7 +96,17 @@ fun ShowroomScreen(
             topBar = {
                 CenterAlignedTopAppBar(
                     title = { Text(if (isSelectionMode) "${selectedProductIds.size} Ürün" else stringResource(Res.string.nav_showroom), fontWeight = FontWeight.Bold, fontSize = 16.sp) },
-                    navigationIcon = { IconButton(onClick = onBackClick) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
+                    navigationIcon = {
+                        if (initialCategory == null && initialOwnerId == null) {
+                            IconButton(onClick = onMenuClick) {
+                                Icon(Icons.Default.Menu, contentDescription = "Menu")
+                            }
+                        } else {
+                            IconButton(onClick = onBackClick) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            }
+                        }
+                    },
                     actions = {
                         // PDF Export Icon - NO IF CHECK, ALWAYS VISIBLE NEXT TO "URUN SEC"
                         IconButton(

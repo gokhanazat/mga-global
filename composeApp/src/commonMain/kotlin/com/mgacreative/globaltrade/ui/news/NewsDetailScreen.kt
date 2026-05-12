@@ -1,4 +1,4 @@
-﻿package com.mgacreative.globaltrade.ui.news
+package com.mgacreative.globaltrade.ui.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.Article
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import io.ktor.http.Url
+import io.ktor.client.request.header
 import com.mgacreative.globaltrade.openUrl
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,18 +80,6 @@ fun NewsDetailScreen(
                     .verticalScroll(scroll)
                     .padding(24.dp)
             ) {
-                if (!newsItem.imageUrl.isNullOrEmpty()) {
-                    KamelImage(
-                        resource = asyncPainterResource(data = Url(newsItem.imageUrl)),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(220.dp)
-                            .clip(RoundedCornerShape(16.dp)),
-                        contentScale = ContentScale.Crop,
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
                 if (newsItem.pubDate.isNotEmpty()) {
                     Text(newsItem.pubDate, fontSize = 11.sp, color = Color.Gray)
                     Spacer(modifier = Modifier.height(8.dp))
