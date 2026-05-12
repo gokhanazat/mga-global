@@ -22,8 +22,10 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Build Wasm
-        run: ./gradlew :composeApp:wasmJsBrowserDistribution
+      - name: Build with Gradle
+        run: |
+          chmod +x gradlew
+          ./gradlew wasmJsBrowserDistribution
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
