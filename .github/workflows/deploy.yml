@@ -27,7 +27,8 @@ jobs:
           /*
             Cross-Origin-Embedder-Policy: require-corp
             Cross-Origin-Opener-Policy: same-origin
-            Content-Security-Policy: default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' blob:; connect-src *; img-src * data: blob:; style-src * 'unsafe-inline';
+            X-Content-Type-Options: nosniff
+            Cache-Control: no-cache, no-store, must-revalidate
           EOF
 
       - name: Deploy to Cloudflare Pages
