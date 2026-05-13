@@ -21,19 +21,27 @@ jobs:
           chmod +x gradlew
           ./gradlew wasmJsBrowserDistribution
 
-      - name: Create _headers file manually
+      - name: Prepare Deployment Directory
         run: |
-          cat <<EOF > composeApp/build/dist/wasmJs/productionExecutable/_headers
+          mkdir -p deploy_dist
+          cp -r composeApp/build/dist/wasmJs/productionExecutable/* deploy_dist/
+          
+      - name: Create Cloudflare Configuration
+        run: |
+          cat <<EOF > deploy_dist/_headers
           /*
             Cross-Origin-Embedder-Policy: require-corp
             Cross-Origin-Opener-Policy: same-origin
             X-Content-Type-Options: nosniff
-            Cache-Control: no-cache, no-store, must-revalidate
+          /*.wasm
+            Content-Type: application/wasm
+            Cache-Control: public, max-age=31536000, immutable
           EOF
+          echo "/* /index.html 200" > deploy_dist/_redirects
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy composeApp/build/dist/wasmJs/productionExecutable --project-name=itsohub
+          command: pages deploy deploy_dist --project-name=itsohub
