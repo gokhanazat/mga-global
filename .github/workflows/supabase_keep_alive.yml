@@ -1,0 +1,16 @@
+name: Supabase Keep Alive (mgaglobal)
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Her gün sabah 09:00'da (TSİ) otomatik çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu
+
+jobs:
+  ping_supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Request
+        run: |
+          curl -i -X GET "https://xwolkximbkrhrqocvuyp.supabase.co/rest/v1/companies?select=id&limit=1" \
+          -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3b2xreGltYmtyaHJxb2N2dXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNDA4ODAsImV4cCI6MjA5NjkxNjg4MH0.-LgLJvwpExzjhxesSk4LFVblCC5AjXWehzHlHe3-T4g" \
+          -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3b2xreGltYmtyaHJxb2N2dXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNDA4ODAsImV4cCI6MjA5NjkxNjg4MH0.-LgLJvwpExzjhxesSk4LFVblCC5AjXWehzHlHe3-T4g"
