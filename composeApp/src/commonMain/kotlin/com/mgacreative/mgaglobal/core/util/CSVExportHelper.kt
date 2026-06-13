@@ -1,11 +1,11 @@
-﻿package com.mgacreative.mgaglobal.core.util
+package com.mgacreative.mgaglobal.core.util
 
 import com.mgacreative.mgaglobal.core.domain.b2b.B2BCompany
 
 object CSVExportHelper {
     fun companiesToCsv(companies: List<B2BCompany>): String {
         // Turkish Excel usually expects semicolon (;) as separator
-        val header = "ID;Åirket AdÄ±;SektÃ¶r;Ãœlke;Email;Telefon;GSM;Yetkili KiÅŸi;DoÄŸrulanmÄ±ÅŸ;Market YÄ±lÄ±;Export Hacmi;Puan;AÃ§Ä±klama"
+        val header = "ID;irket Adı;Sektör;Ülke;Email;Telefon;GSM;Yetkili Kişi;Doğrulanmış;Market Yılı;Export Hacmi;Puan;Açıklama"
         
         val rows = companies.map { c ->
             buildString {
@@ -17,7 +17,7 @@ object CSVExportHelper {
                 append(c.phone.clean()).append(";")
                 append(c.gsm.clean()).append(";")
                 append(c.authorizedPerson.clean()).append(";")
-                append(if (c.isVerified) "Evet" else "HayÄ±r").append(";")
+                append(if (c.isVerified) "Evet" else "Hayır").append(";")
                 append(c.yearsInMarket).append(";")
                 append(c.exportVolume).append(";")
                 append(c.platformActivityScore).append(";")

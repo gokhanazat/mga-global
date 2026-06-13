@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.components
+package com.mgacreative.mgaglobal.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -71,7 +71,7 @@ fun MatchCard(
                     Spacer(modifier = Modifier.height(6.dp))
                     
                     Text(
-                        text = "$sector â€¢ $country",
+                        text = "$sector • $country",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.SemiBold

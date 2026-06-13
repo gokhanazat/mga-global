@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.home
+package com.mgacreative.mgaglobal.ui.home
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -138,7 +138,7 @@ fun HomeScreenContent(
             ) {
                 Column {
                     Text(
-                        text = "SektÃ¶rler",
+                        text = "Sektörler",
                         style = MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = if (isWeb) 36.sp else 28.sp
@@ -150,7 +150,7 @@ fun HomeScreenContent(
                 }
                 
                 Text(
-                    text = "TÃ¼m sektÃ¶rleri gÃ¶rÃ¼ntÃ¼le â†’",
+                    text = "Tüm sektörleri görüntüle →",
                     color = PrimaryAnchor.copy(alpha = 0.6f),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
@@ -190,7 +190,7 @@ fun HomeScreenContent(
                     border = BorderStroke(1.dp, PrimaryAnchor.copy(alpha = 0.2f)),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = PrimaryAnchor)
                 ) {
-                    Text("TÃ¼m SektÃ¶rleri GÃ¶r", fontWeight = FontWeight.Bold)
+                    Text("Tüm Sektörleri Gör", fontWeight = FontWeight.Bold)
                 }
             } else if (!isWeb && isSectorsExpanded) {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -198,7 +198,7 @@ fun HomeScreenContent(
                     onClick = { onToggleSectors(false) },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text("Daha Az GÃ¶ster â†‘", color = PrimaryAnchor.copy(alpha = 0.6f), fontWeight = FontWeight.Bold)
+                    Text("Daha Az Göster ↑", color = PrimaryAnchor.copy(alpha = 0.6f), fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -239,7 +239,7 @@ fun HomeScreenContent(
             Box(modifier = Modifier.padding(horizontal = 24.dp).padding(bottom = 24.dp)) {
                 FeatureEditorialCard(
                     title = "B2B Meeting",
-                    subtitle = "Profesyonel aÄŸÄ±nÄ±zÄ± geniÅŸletin ve stratejik iÅŸ ortaklÄ±klarÄ± baÅŸlatÄ±n.",
+                    subtitle = "Profesyonel ağınızı genişletin ve stratejik iş ortaklıkları başlatın.",
                     imageRes = Res.drawable.companymeeting,
                     icon = Icons.Default.Groups,
                     onClick = { onModuleClick("CompanyMeeting", null, null) }
@@ -258,7 +258,7 @@ fun HomeScreenContent(
                 Box(modifier = Modifier.weight(1f)) {
                     FeatureEditorialCard(
                         title = "B2B Meeting",
-                        subtitle = "Profesyonel aÄŸÄ±nÄ±zÄ± geniÅŸletin ve stratejik iÅŸ ortaklÄ±klarÄ± baÅŸlatÄ±n.",
+                        subtitle = "Profesyonel ağınızı genişletin ve stratejik iş ortaklıkları başlatın.",
                         imageRes = Res.drawable.companymeeting,
                         icon = Icons.Default.Groups,
                         onClick = { onModuleClick("CompanyMeeting", null, null) }
@@ -268,7 +268,7 @@ fun HomeScreenContent(
             Box(modifier = Modifier.weight(1f)) {
                 FeatureEditorialCard(
                     title = "Ekonomi Haberleri",
-                    subtitle = "KÃ¼resel ticaret dÃ¼nyasÄ±ndaki son geliÅŸmeler ve piyasa analizleri.",
+                    subtitle = "Küresel ticaret dünyasındaki son gelişmeler ve piyasa analizleri.",
                     imageRes = Res.drawable.news,
                     icon = Icons.Default.Public,
                     onClick = { onModuleClick("EconomicNews", null, null) }
@@ -319,7 +319,7 @@ fun SovereignHero(
                     .widthIn(max = 500.dp)
             ) {
                 Text(
-                    text = "KÃœRESEL TÄ°CARETÄ°N YENÄ° MERKEZÄ°",
+                    text = "KÜRESEL TİCARETİN YENİ MERKEZİ",
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
@@ -334,7 +334,7 @@ fun SovereignHero(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "DÃ¼nya pazarlarÄ±yla buluÅŸmanÄ±n en kÄ±sa yolu. Ä°ÅŸletmenizi kÃ¼resel Ã¶lÃ§ekte sergileyin, yeni ortaklÄ±klar kurun.",
+                    text = "Dünya pazarlarıyla buluşmanın en kısa yolu. İşletmenizi küresel ölçekte sergileyin, yeni ortaklıklar kurun.",
                     color = Color.White.copy(alpha = 0.8f),
                     fontSize = 16.sp,
                     lineHeight = 24.sp
@@ -400,25 +400,25 @@ fun FeatureEditorialCard(
 @Composable
 private fun getSectorPainter(name: String): androidx.compose.ui.graphics.painter.Painter? {
     val res = when {
-        name.contains("GÄ±da", true) -> Res.drawable.ic_gida
-        name.contains("BiliÅŸim", true) -> Res.drawable.ic_bilisim
-        name.contains("DanÄ±ÅŸmanlÄ±k", true) -> Res.drawable.ic_danismanlik
-        name.contains("DayanÄ±klÄ±", true) -> Res.drawable.ic_dayanikli
+        name.contains("Gıda", true) -> Res.drawable.ic_gida
+        name.contains("Bilişim", true) -> Res.drawable.ic_bilisim
+        name.contains("Danışmanlık", true) -> Res.drawable.ic_danismanlik
+        name.contains("Dayanıklı", true) -> Res.drawable.ic_dayanikli
         name.contains("Deri", true) -> Res.drawable.ic_deri
-        name.contains("DÄ±ÅŸ Ticaret", true) -> Res.drawable.ic_disticaret
+        name.contains("Dış Ticaret", true) -> Res.drawable.ic_disticaret
         name.contains("Elektronik", true) -> Res.drawable.ic_elektronik
         name.contains("Enerji", true) -> Res.drawable.ic_enerji
         name.contains("Finans", true) -> Res.drawable.ic_finans
-        name.contains("HayvancÄ±lÄ±k", true) -> Res.drawable.ic_hayvancilik
-        name.contains("Ä°nÅŸaat", true) -> Res.drawable.ic_insaat
+        name.contains("Hayvancılık", true) -> Res.drawable.ic_hayvancilik
+        name.contains("İnşaat", true) -> Res.drawable.ic_insaat
         name.contains("Lojistik", true) -> Res.drawable.ic_lojistik
         name.contains("Madencilik", true) -> Res.drawable.ic_madencilik
         name.contains("Medikal", true) -> Res.drawable.ic_medikal
         name.contains("Mobilya", true) -> Res.drawable.ic_mobilya
-        name.contains("MÃ¼cevherat", true) -> Res.drawable.ic_mucevherat
+        name.contains("Mücevherat", true) -> Res.drawable.ic_mucevherat
         name.contains("Otomotiv", true) || name.contains("Otomativ", true) -> Res.drawable.ic_otomativ
-        name.contains("ReklamcÄ±lÄ±k", true) -> Res.drawable.ic_reklamcilik
-        name.contains("TarÄ±m", true) -> Res.drawable.ic_tarim
+        name.contains("Reklamcılık", true) -> Res.drawable.ic_reklamcilik
+        name.contains("Tarım", true) -> Res.drawable.ic_tarim
         name.contains("Tekstil", true) -> Res.drawable.ic_tekstil
         name.contains("Telekom", true) || name.contains("Telekominikasyon", true) -> Res.drawable.ic_telekominikasyon
         else -> null

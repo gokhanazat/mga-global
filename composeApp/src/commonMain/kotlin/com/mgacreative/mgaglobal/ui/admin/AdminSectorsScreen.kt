@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.admin
+package com.mgacreative.mgaglobal.ui.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,7 +59,7 @@ fun AdminSectorsScreen(
         val screenWidth = maxWidth
         val isWeb = screenWidth > 800.dp
         
-        // Web'de yan boÅŸluklar Lacivert
+        // Web'de yan boşluklar Lacivert
         Box(modifier = Modifier.fillMaxSize().background(if (isWeb) Color(0xFF0F172A) else Color(0xFFF8F9FA)))
 
         Scaffold(
@@ -72,7 +72,7 @@ fun AdminSectorsScreen(
                 CenterAlignedTopAppBar(
                     title = { 
                         Text(
-                            "Meslek GruplarÄ± (SektÃ¶rler)", 
+                            "Meslek Grupları (Sektörler)", 
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleMedium
                         ) 
@@ -127,7 +127,7 @@ fun AdminSectorsScreen(
                 ) {
                     item {
                         Text(
-                            "Bu listedeki sektÃ¶rler, ÅŸirket profili oluÅŸtururken 'SektÃ¶r' seÃ§imi olarak sunulacaktÄ±r.",
+                            "Bu listedeki sektörler, şirket profili oluştururken 'Sektör' seçimi olarak sunulacaktır.",
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.Gray,
                             modifier = Modifier.padding(bottom = 8.dp)
@@ -136,7 +136,7 @@ fun AdminSectorsScreen(
                     if (sectors.isEmpty()) {
                         item {
                             Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
-                                Text("HenÃ¼z meslek grubu tanÄ±mlanmamÄ±ÅŸ.", color = Color.LightGray)
+                                Text("Henüz meslek grubu tanımlanmamış.", color = Color.LightGray)
                             }
                         }
                     }
@@ -153,7 +153,7 @@ fun AdminSectorsScreen(
                                 scope.launch {
                                     val res = sectorService.deleteSector(sector.id)
                                     if (res.isSuccess) {
-                                        snackbarHostState.showSnackbar("SektÃ¶r silindi")
+                                        snackbarHostState.showSnackbar("Sektör silindi")
                                         fetchSectors()
                                     }
                                 }
@@ -168,7 +168,7 @@ fun AdminSectorsScreen(
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text(if (currentSector == null) "Yeni Meslek Grubu Ekle" else "Meslek Grubunu DÃ¼zenle", fontWeight = FontWeight.Bold) },
+            title = { Text(if (currentSector == null) "Yeni Meslek Grubu Ekle" else "Meslek Grubunu Düzenle", fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(
@@ -176,14 +176,14 @@ fun AdminSectorsScreen(
                         onValueChange = { groupNo = it },
                         label = { Text("Grup No") },
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text("Ã–rn: G1") },
+                        placeholder = { Text("Örn: G1") },
                         singleLine = true,
                         shape = RoundedCornerShape(12.dp)
                     )
                     OutlinedTextField(
                         value = sectorName,
                         onValueChange = { sectorName = it },
-                        label = { Text("SektÃ¶r / Meslek Grubu AdÄ±") },
+                        label = { Text("Sektör / Meslek Grubu Adı") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         shape = RoundedCornerShape(12.dp)
@@ -200,7 +200,7 @@ fun AdminSectorsScreen(
                             )
                             val res = sectorService.saveSector(sector)
                             if (res.isSuccess) {
-                                snackbarHostState.showSnackbar(if (currentSector == null) "SektÃ¶r eklendi" else "SektÃ¶r gÃ¼ncellendi")
+                                snackbarHostState.showSnackbar(if (currentSector == null) "Sektör eklendi" else "Sektör güncellendi")
                                 fetchSectors()
                                 showDialog = false
                             }
@@ -210,11 +210,11 @@ fun AdminSectorsScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F172A))
                 ) {
-                    Text(if (currentSector == null) "Ekle" else "GÃ¼ncelle")
+                    Text(if (currentSector == null) "Ekle" else "Güncelle")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDialog = false }) { Text("Ä°ptal", color = Color.Gray) }
+                TextButton(onClick = { showDialog = false }) { Text("İptal", color = Color.Gray) }
             },
             shape = RoundedCornerShape(24.dp)
         )
@@ -253,7 +253,7 @@ fun SectorListItem(
                 }
                 Text(sector.name, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color(0xFF0F172A), lineHeight = 16.sp)
             }
-            // ArtÄ±k dÃ¼zenleme kartÄ±n kendisine tÄ±klanarak yapÄ±lÄ±yor. Sadece silme ikonu bÄ±rakÄ±ldÄ±.
+            // Artık düzenleme kartın kendisine tıklanarak yapılıyor. Sadece silme ikonu bırakıldı.
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) { 
                 Icon(Icons.Default.Delete, "Sil", tint = Color(0xFFE74C3C).copy(alpha = 0.8f), modifier = Modifier.size(20.dp)) 
             }

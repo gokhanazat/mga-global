@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.meeting
+package com.mgacreative.mgaglobal.ui.meeting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,7 +57,7 @@ fun CompanyMeetingScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("B2B EÅŸleÅŸtirme", fontWeight = FontWeight.Bold) },
+                title = { Text("B2B Eşleştirme", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Geri") } },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color(0xFF0F172A),
@@ -72,7 +72,7 @@ fun CompanyMeetingScreen(
             val isWeb = screenWidth > 800.dp
             val listModifier = if (isWeb) Modifier.width(800.dp).align(Alignment.TopCenter) else Modifier.fillMaxWidth()
 
-            // Web'de yan boÅŸluklar Lacivert
+            // Web'de yan boşluklar Lacivert
             Box(modifier = Modifier.fillMaxSize().background(if (isWeb) Color(0xFF0F172A) else Color(0xFFF1F3F5)))
 
             Column(modifier = listModifier.background(Color(0xFFF1F3F5))) {
@@ -80,7 +80,7 @@ fun CompanyMeetingScreen(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    placeholder = { Text("Firma adÄ±yla ara...") },
+                    placeholder = { Text("Firma adıyla ara...") },
                     leadingIcon = { Icon(Icons.Default.Search, null) },
                     shape = RoundedCornerShape(16.dp)
                 )

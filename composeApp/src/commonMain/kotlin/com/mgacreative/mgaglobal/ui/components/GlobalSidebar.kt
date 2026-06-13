@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.components
+package com.mgacreative.mgaglobal.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -92,7 +92,7 @@ fun GlobalSidebar(
 
         // Navigation Items
         SidebarNavItem(
-            title = "FÄ°RMALAR",
+            title = "FİRMALAR",
             icon = Icons.Default.Business,
             hasSearch = true,
             searchValue = companyQuery,
@@ -103,7 +103,7 @@ fun GlobalSidebar(
         Spacer(modifier = Modifier.height(16.dp))
 
         SidebarNavItem(
-            title = "SEKTÃ–RLER",
+            title = "SEKTÖRLER",
             icon = Icons.Default.Dashboard,
             hasSearch = true,
             searchValue = sectorQuery,
@@ -114,7 +114,7 @@ fun GlobalSidebar(
         Spacer(modifier = Modifier.height(16.dp))
 
         SidebarNavItem(
-            title = "DANIÅMANLIK",
+            title = "DANIMANLIK",
             icon = Icons.Default.SupportAgent,
             onClick = { onNavItemClick("Consultancy") }
         )
@@ -122,7 +122,7 @@ fun GlobalSidebar(
         Spacer(modifier = Modifier.height(16.dp))
 
         SidebarNavItem(
-            title = "EÄÄ°TÄ°MLER",
+            title = "EİTİMLER",
             icon = Icons.Default.School,
             onClick = { onNavItemClick("Education") }
         )
@@ -130,7 +130,7 @@ fun GlobalSidebar(
         Spacer(modifier = Modifier.height(16.dp))
 
         SidebarNavItem(
-            title = "Ä°TSO",
+            title = "İTSO",
             icon = Icons.Default.Language,
             onClick = onItsoWebsiteClick
         )

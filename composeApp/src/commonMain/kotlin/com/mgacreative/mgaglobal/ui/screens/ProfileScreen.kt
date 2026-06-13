@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.screens
+package com.mgacreative.mgaglobal.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,20 +46,20 @@ fun ProfileScreen(
     val scope = rememberCoroutineScope()
     val settingsService = remember { SettingsService() }
     val companyService = remember { CompanyService() }
-    var contactEmail by remember { mutableStateOf("YÃ¼kleniyor...") }
+    var contactEmail by remember { mutableStateOf("Yükleniyor...") }
     var companyData by remember { mutableStateOf<B2BCompany?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     val logoPicker = rememberFilePickerLauncher(
         type = PickerType.Image,
-        title = "Logo SeÃ§"
+        title = "Logo Seç"
     ) { file ->
         if (file != null) {
             scope.launch {
                 try {
                     val bytes = file.readBytes()
                     if (bytes.size > 2097152) { // 2MB limit
-                        snackbarHostState.showSnackbar("Logo 2MB'dan bÃ¼yÃ¼k olamaz.")
+                        snackbarHostState.showSnackbar("Logo 2MB'dan büyük olamaz.")
                         return@launch
                     }
                     
@@ -77,13 +77,13 @@ fun ProfileScreen(
                             // Re-fetch or update local state
                             val companyResult = companyService.getOwnCompany()
                             companyData = companyResult.getOrNull()
-                            snackbarHostState.showSnackbar("Logo baÅŸarÄ±yla gÃ¼ncellendi.")
+                            snackbarHostState.showSnackbar("Logo başarıyla güncellendi.")
                         } else {
                             snackbarHostState.showSnackbar("Hata: ${saveResult.exceptionOrNull()?.message}")
                         }
                     }
                 } catch (e: Exception) {
-                    snackbarHostState.showSnackbar("Resim iÅŸlemi sÄ±rasÄ±nda hata: ${e.message}")
+                    snackbarHostState.showSnackbar("Resim işlemi sırasında hata: ${e.message}")
                 }
             }
         }
@@ -138,7 +138,7 @@ fun ProfileScreen(
                     Column {
                         ProfileOptionItem(stringResource(Res.string.company_info), Icons.Default.Business, onClick = onCompanySettingsClick)
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color.LightGray.copy(alpha = 0.3f))
-                        ProfileOptionItem("ÃœrÃ¼n YÃ¶netimi", Icons.Default.Category, onClick = onProductsClick)
+                        ProfileOptionItem("Ürün Yönetimi", Icons.Default.Category, onClick = onProductsClick)
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color.LightGray.copy(alpha = 0.3f))
                         ProfileOptionItem(stringResource(Res.string.notification_prefs), Icons.Default.Notifications, onClick = onNotificationSettingsClick)
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color.LightGray.copy(alpha = 0.3f))
@@ -260,13 +260,13 @@ fun ProfileHeader(company: B2BCompany?, onSettingsClick: () -> Unit, onLogoClick
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = company?.name?.ifBlank { "Åirket AdÄ± Yok" } ?: "Åirket AdÄ± SeÃ§ilmedi",
+                    text = company?.name?.ifBlank { "irket Adı Yok" } ?: "irket Adı Seçilmedi",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
-                    text = company?.authorizedPerson?.ifBlank { "Yetkili KiÅŸi Yok" } ?: "Yetkili KiÅŸi Belirtilmedi",
+                    text = company?.authorizedPerson?.ifBlank { "Yetkili Kişi Yok" } ?: "Yetkili Kişi Belirtilmedi",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.8f)
                 )

@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.news
+package com.mgacreative.mgaglobal.ui.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -80,7 +80,7 @@ fun parseRss(xml: String): List<NewsItem> {
             ?.cleanCData()
             ?.trim()?.replace("\n", "")?.replace("\r", "")
 
-        // GÃ¶receli URL'leri tam URL'ye dÃ¶nÃ¼ÅŸtÃ¼relim ve protokolÃ¼ kontrol edelim
+        // Göreceli URL'leri tam URL'ye dönüştürelim ve protokolü kontrol edelim
         if (imageUrl != null) {
             imageUrl = imageUrl.trim()
             if (imageUrl.startsWith("//")) {
@@ -153,7 +153,7 @@ fun EconomicNewsScreen(
                 client.close()
             }
         } catch (e: Exception) {
-            error = "Haberler yÃ¼klenemedi: ${e.message}"
+            error = "Haberler yüklenemedi: ${e.message}"
         } finally {
             isLoading = false
         }
@@ -205,7 +205,7 @@ fun EconomicNewsScreen(
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
-                                    "Bloomberg HT haberleri yÃ¼kleniyor...",
+                                    "Bloomberg HT haberleri yükleniyor...",
                                     color = Color.Gray,
                                     fontSize = 14.sp
                                 )
@@ -244,7 +244,7 @@ fun EconomicNewsScreen(
                     }
                     newsList.isEmpty() -> {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text("Haber bulunamadÄ±.", color = Color.Gray)
+                            Text("Haber bulunamadı.", color = Color.Gray)
                         }
                     }
                     else -> {
@@ -347,7 +347,7 @@ fun NewsListCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Haberin DevamÄ± â†’",
+                text = "Haberin Devamı →",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF3B82F6)

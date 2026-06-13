@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.showroom
+package com.mgacreative.mgaglobal.ui.showroom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -73,8 +73,8 @@ fun ShowroomScreen(
             !initialCategory.isNullOrBlank() && initialCategory != "{category}" -> productService.getProductsByCategory(initialCategory)
             !initialOwnerId.isNullOrBlank() && initialOwnerId != "{ownerId}" -> productService.getProductsByOwnerId(initialOwnerId)
             else -> {
-                // EÄŸer URL Ã¼zerinden bir filtreleme gelmediyse ve ana sayfadan gelinmiyorsa, 
-                // kaza eseri tÃ¼m Ã¼rÃ¼nleri dÃ¶kmemesi iÃ§in boÅŸ liste dÃ¶nelim.
+                // Eğer URL üzerinden bir filtreleme gelmediyse ve ana sayfadan gelinmiyorsa, 
+                // kaza eseri tüm ürünleri dökmemesi için boş liste dönelim.
                 if (initialCategory == null && initialOwnerId == null) {
                     productService.getAllProducts()
                 } else {
@@ -95,7 +95,7 @@ fun ShowroomScreen(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text(if (isSelectionMode) "${selectedProductIds.size} ÃœrÃ¼n" else stringResource(Res.string.nav_showroom), fontWeight = FontWeight.Bold, fontSize = 16.sp) },
+                    title = { Text(if (isSelectionMode) "${selectedProductIds.size} Ürün" else stringResource(Res.string.nav_showroom), fontWeight = FontWeight.Bold, fontSize = 16.sp) },
                     navigationIcon = {
                         if (initialCategory == null && initialOwnerId == null) {
                             IconButton(onClick = onMenuClick) {
@@ -118,7 +118,7 @@ fun ShowroomScreen(
                                         products
                                     }
                                     if (targetProducts.isEmpty()) {
-                                        snackbarHostState.showSnackbar("Ä°ndirilecek Ã¼rÃ¼n bulunamadÄ±.")
+                                        snackbarHostState.showSnackbar("İndirilecek ürün bulunamadı.")
                                         return@launch
                                     }
                                     val pdfBytes = PdfGenerator.generateShowroomCatalog(targetProducts, ownCompany)
@@ -128,7 +128,7 @@ fun ShowroomScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.PictureAsPdf,
-                                contentDescription = "PDF Ä°ndir",
+                                contentDescription = "PDF İndir",
                                 tint = Color.White,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -136,11 +136,11 @@ fun ShowroomScreen(
 
                         if (isSelectionMode) {
                             IconButton(onClick = { isSelectionMode = false; selectedProductIds = emptySet() }) { 
-                                Icon(Icons.Default.Close, contentDescription = "VazgeÃ§", tint = Color.White) 
+                                Icon(Icons.Default.Close, contentDescription = "Vazgeç", tint = Color.White) 
                             }
                         } else {
                             TextButton(onClick = { isSelectionMode = true }) { 
-                                Text("ÃœrÃ¼n SeÃ§", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp) 
+                                Text("Ürün Seç", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp) 
                             }
                         }
                     },
@@ -154,7 +154,7 @@ fun ShowroomScreen(
             },
             floatingActionButton = {
                 if (currentUserId != "guest" && currentUserId == initialOwnerId) {
-                    FloatingActionButton(onClick = { onEditClick("") }, containerColor = MaterialTheme.colorScheme.primary, contentColor = Color.White) { Icon(Icons.Default.Add, contentDescription = "ÃœrÃ¼n Ekle") }
+                    FloatingActionButton(onClick = { onEditClick("") }, containerColor = MaterialTheme.colorScheme.primary, contentColor = Color.White) { Icon(Icons.Default.Add, contentDescription = "Ürün Ekle") }
                 }
             }
         ) { paddingValues ->
@@ -170,7 +170,7 @@ fun ShowroomScreen(
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Color(0xFF0F172A)) }
                     } else if (products.isEmpty()) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { 
-                            Text("HenÃ¼z Ã¼rÃ¼n bulunmuyor.", color = Color.Gray) 
+                            Text("Henüz ürün bulunmuyor.", color = Color.Gray) 
                         }
                     } else {
                         LazyVerticalGrid(
@@ -272,7 +272,7 @@ fun ProductDetailDialog(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Icon(Icons.Default.Image, null, modifier = Modifier.size(48.dp), tint = Color.Gray)
-                                Text("Resim HatasÄ±", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
+                                Text("Resim Hatası", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
                             }
                         }
                     } else {
@@ -345,7 +345,7 @@ fun ProductDetailDialog(
                     // Description Section
                     Column {
                         Text(
-                            text = "AÃ§Ä±klama & Teknik Detaylar", 
+                            text = "Açıklama & Teknik Detaylar", 
                             style = MaterialTheme.typography.titleMedium, 
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface

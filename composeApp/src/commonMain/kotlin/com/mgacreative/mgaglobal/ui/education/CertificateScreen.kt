@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.education
+package com.mgacreative.mgaglobal.ui.education
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -32,7 +32,7 @@ fun CertificateScreen(
     val companyService = remember { CompanyService() }
     
     var education by remember { mutableStateOf<Education?>(null) }
-    var companyName by remember { mutableStateOf("Ä°ÅŸletme") }
+    var companyName by remember { mutableStateOf("İşletme") }
     var isLoading by remember { mutableStateOf(true) }
     
     LaunchedEffect(eduId) {
@@ -57,7 +57,7 @@ fun CertificateScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("BaÅŸarÄ± SertifikasÄ±", fontWeight = FontWeight.Bold) },
+                title = { Text("Başarı Sertifikası", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Geri")
@@ -100,7 +100,7 @@ fun CertificateScreen(
                         Spacer(modifier = Modifier.height(24.dp))
                         
                         Text(
-                            "BAÅARI SERTÄ°FÄ°KASI",
+                            "BAARI SERTİFİKASI",
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.primary,
@@ -113,7 +113,7 @@ fun CertificateScreen(
                         Spacer(modifier = Modifier.height(24.dp))
                         
                         Text(
-                            "SayÄ±n KatÄ±lÄ±mcÄ±,",
+                            "Sayın Katılımcı,",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.Gray,
                             textAlign = TextAlign.Center
@@ -122,7 +122,7 @@ fun CertificateScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         Text(
-                            education?.title ?: "EÄŸitim ProgramÄ±",
+                            education?.title ?: "Eğitim Programı",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold,
                             textAlign = TextAlign.Center,
@@ -132,7 +132,7 @@ fun CertificateScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         Text(
-                            "baÅŸarÄ±yla tamamlandÄ±ÄŸÄ± ve gerekli yeterlilik saÄŸlandÄ±ÄŸÄ± iÃ§in bu sertifikaya hak kazanÄ±lmÄ±ÅŸtÄ±r.",
+                            "başarıyla tamamlandığı ve gerekli yeterlilik sağlandığı için bu sertifikaya hak kazanılmıştır.",
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                             color = Color.DarkGray,
@@ -172,7 +172,7 @@ fun CertificateScreen(
                         
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            "OnaylÄ± EÄŸitim Ãœyesidir",
+                            "Onaylı Eğitim Üyesidir",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
                             fontWeight = FontWeight.Bold

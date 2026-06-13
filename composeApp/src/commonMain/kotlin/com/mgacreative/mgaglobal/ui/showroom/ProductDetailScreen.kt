@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.showroom
+package com.mgacreative.mgaglobal.ui.showroom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -97,7 +97,7 @@ fun ProductDetailScreen(
             }
         } else if (product == null) {
             Box(Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
-                Text("ÃœrÃ¼n bulunamadÄ±.", color = Color.Gray)
+                Text("Ürün bulunamadı.", color = Color.Gray)
             }
         } else {
             val p = product!!
@@ -134,7 +134,7 @@ fun ProductDetailScreen(
                         if (model != null) {
                             coil3.compose.AsyncImage(
                                 model = model,
-                                contentDescription = "ÃœrÃ¼n Resmi",
+                                contentDescription = "Ürün Resmi",
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
@@ -204,9 +204,9 @@ fun ProductDetailScreen(
                     Spacer(modifier = Modifier.height(32.dp))
 
                     // Description
-                    DetailSection(title = "ÃœrÃ¼n AÃ§Ä±klamasÄ±") {
+                    DetailSection(title = "Ürün Açıklaması") {
                         Text(
-                            text = p.description.ifEmpty { "AÃ§Ä±klama bulunmuyor." },
+                            text = p.description.ifEmpty { "Açıklama bulunmuyor." },
                             style = MaterialTheme.typography.bodyMedium,
                             lineHeight = 24.sp,
                             color = Color.DarkGray

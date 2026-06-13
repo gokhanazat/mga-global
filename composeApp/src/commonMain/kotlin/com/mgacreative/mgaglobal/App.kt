@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal
+package com.mgacreative.mgaglobal
 
 import androidx.compose.material3.*
 import androidx.compose.foundation.background
@@ -385,7 +385,7 @@ fun AppScaffoldContent(
                                    isShowroom || isMainShowroom || 
                                    isProductDetail || isEconomicNews
             
-            // Web'de sidebar olduÄŸu iÃ§in bottom bar'Ä± sadece mobilde gÃ¶steriyoruz
+            // Web'de sidebar olduğu için bottom bar'ı sadece mobilde gösteriyoruz
             if (!isWeb && !noBottomBarScreens && userRole != null) {
                 NavigationBar(
                     containerColor = Color.White,

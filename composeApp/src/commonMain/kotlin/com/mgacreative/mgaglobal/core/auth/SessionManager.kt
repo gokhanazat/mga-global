@@ -1,16 +1,16 @@
-﻿package com.mgacreative.mgaglobal.core.auth
+package com.mgacreative.mgaglobal.core.auth
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * KullanÄ±cÄ± oturum bilgilerini Firebase'den baÄŸÄ±msÄ±z olarak yÃ¶netir.
+ * Kullanıcı oturum bilgilerini Firebase'den bağımsız olarak yönetir.
  */
 object SessionManager {
     private val _currentRegistryNumber = MutableStateFlow<String?>(null)
     /**
-     * Mevcut oturum aÃ§mÄ±ÅŸ kullanÄ±cÄ±nÄ±n sicil numarasÄ±.
+     * Mevcut oturum açmış kullanıcının sicil numarası.
      */
     val currentRegistryNumber: StateFlow<String?> = _currentRegistryNumber.asStateFlow()
 
@@ -18,17 +18,17 @@ object SessionManager {
     val userRole: StateFlow<Role?> = _userRole.asStateFlow()
 
     /**
-     * GiriÅŸ yapÄ±ldÄ±ÄŸÄ±nda oturumu baÅŸlatÄ±r.
+     * Giriş yapıldığında oturumu başlatır.
      */
     fun startSession(registryNumber: String, role: Role) {
         _currentRegistryNumber.value = registryNumber
         _userRole.value = role
-        // PermissionManager'Ä± da eÅŸzamanlÄ± gÃ¼ncelleyelim
+        // PermissionManager'ı da eşzamanlı güncelleyelim
         PermissionManager.updateRole(role)
     }
 
     /**
-     * Ã‡Ä±kÄ±ÅŸ yapÄ±ldÄ±ÄŸÄ±nda oturumu sonlandÄ±rÄ±r.
+     * Çıkış yapıldığında oturumu sonlandırır.
      */
     fun endSession() {
         _currentRegistryNumber.value = null
@@ -37,7 +37,7 @@ object SessionManager {
     }
 
     /**
-     * Firebase'deki 'uid' yerine artÄ±k 'registryNumber' kullanacaÄŸÄ±z.
+     * Firebase'deki 'uid' yerine artık 'registryNumber' kullanacağız.
      */
     fun getUserId(): String = _currentRegistryNumber.value ?: "guest"
     

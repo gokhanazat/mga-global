@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.b2b
+package com.mgacreative.mgaglobal.ui.b2b
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -63,7 +63,7 @@ fun CompanyProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Åirket Profili", fontWeight = FontWeight.Bold) },
+                title = { Text("irket Profili", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Geri")
@@ -83,7 +83,7 @@ fun CompanyProfileScreen(
             }
         } else if (company == null) {
             Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
-                Text("Åirket bulunamadÄ±.", color = Color.Gray)
+                Text("irket bulunamadı.", color = Color.Gray)
             }
         } else {
             val comp = company!!
@@ -136,17 +136,17 @@ fun CompanyProfileScreen(
                                 }
                             }
                             
-                            // Resim gelirse tÄ±kla gÃ¶r kalksÄ±n (Ã§Ã¼nkÃ¼ resim gÃ¶rÃ¼necek artÄ±k)
+                            // Resim gelirse tıkla gör kalksın (çünkü resim görünecek artık)
                             val logoUrlRaw = comp.logoUrl ?: ""
                             val cleanedLogo = logoUrlRaw.trim().filter { it.code in 33..1000 }
                             if (cleanedLogo.isBlank() || cleanedLogo == "null") {
-                                // BoÅŸken ikon gÃ¶steriyoruz, linke gerek yok
+                                // Boşken ikon gösteriyoruz, linke gerek yok
                             } else {
-                                // Ekstra sigorta olarak link kalsÄ±n ama daha kÃ¼Ã§Ã¼k olsun
+                                // Ekstra sigorta olarak link kalsın ama daha küçük olsun
                                 val finalUrl = if (cleanedLogo.startsWith("http")) cleanedLogo else ApiConfig.getImageUrl(cleanedLogo)
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = "Resmi TarayÄ±cÄ±da AÃ§",
+                                    text = "Resmi Tarayıcıda Aç",
                                     fontSize = 8.sp,
                                     color = Color.Gray,
                                     modifier = Modifier.clickable { try { uriHandler.openUri(finalUrl) } catch(e: Exception) {} }
@@ -190,24 +190,24 @@ fun CompanyProfileScreen(
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
                         Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
-                            Text("Firma DetaylarÄ±", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF1E293B))
+                            Text("Firma Detayları", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF1E293B))
                             Spacer(modifier = Modifier.height(16.dp))
                             
-                            ProfileDetailRow(icon = Icons.Default.Public, label = "Ãœlke", value = comp.country.ifBlank { "BelirtilmemiÅŸ" })
+                            ProfileDetailRow(icon = Icons.Default.Public, label = "Ülke", value = comp.country.ifBlank { "Belirtilmemiş" })
                             HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFF1F5F9))
                             
-                            ProfileDetailRow(icon = Icons.Default.Person, label = "Yetkili KiÅŸi", value = comp.authorizedPerson.ifBlank { "BelirtilmemiÅŸ" })
+                            ProfileDetailRow(icon = Icons.Default.Person, label = "Yetkili Kişi", value = comp.authorizedPerson.ifBlank { "Belirtilmemiş" })
                             HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFF1F5F9))
 
-                            ProfileDetailRow(icon = Icons.Default.Phone, label = "Telefon", value = comp.phone.ifBlank { "BelirtilmemiÅŸ" })
+                            ProfileDetailRow(icon = Icons.Default.Phone, label = "Telefon", value = comp.phone.ifBlank { "Belirtilmemiş" })
                             HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFF1F5F9))
 
-                            ProfileDetailRow(icon = Icons.Default.Email, label = "E-posta", value = comp.email.ifBlank { "BelirtilmemiÅŸ" })
+                            ProfileDetailRow(icon = Icons.Default.Email, label = "E-posta", value = comp.email.ifBlank { "Belirtilmemiş" })
 
                             if (comp.description.isNotBlank()) {
                                 HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFF1F5F9))
                                 Column(modifier = Modifier.fillMaxWidth()) {
-                                    Text("Åirket HakkÄ±nda", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                                    Text("irket Hakkında", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
                                         text = comp.description,
@@ -224,7 +224,7 @@ fun CompanyProfileScreen(
                     if (certificates.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            "BaÅŸarÄ± SertifikalarÄ±", 
+                            "Başarı Sertifikaları", 
                             style = MaterialTheme.typography.titleMedium, 
                             fontWeight = FontWeight.Bold, 
                             color = Color(0xFF1E293B),
@@ -253,7 +253,7 @@ fun CompanyProfileScreen(
                                     }
                                     Spacer(modifier = Modifier.width(16.dp))
                                     Column {
-                                        Text("EÄŸitim BaÅŸarÄ± SertifikasÄ±", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                        Text("Eğitim Başarı Sertifikası", fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                         Text("Kod: ${cert.certCode}", fontSize = 12.sp, color = Color.Gray)
                                     }
                                 }

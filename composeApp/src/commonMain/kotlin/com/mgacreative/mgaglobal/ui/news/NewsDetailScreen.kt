@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.news
+package com.mgacreative.mgaglobal.ui.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -54,7 +54,7 @@ fun NewsDetailScreen(
                 actions = {
                     if (newsItem.link.isNotEmpty()) {
                         IconButton(onClick = { openUrl(newsItem.link) }) {
-                            Icon(Icons.Default.OpenInBrowser, "TarayÄ±cÄ±da AÃ§", tint = Color.White)
+                            Icon(Icons.Default.OpenInBrowser, "Tarayıcıda Aç", tint = Color.White)
                         }
                     }
                 }

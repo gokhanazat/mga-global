@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.admin
+package com.mgacreative.mgaglobal.ui.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -48,7 +48,7 @@ fun AdminHelpCenterScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("YardÄ±m Merkezi YÃ¶netimi", fontWeight = FontWeight.Bold) },
+                title = { Text("Yardım Merkezi Yönetimi", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri")
@@ -61,9 +61,9 @@ fun AdminHelpCenterScreen(
                                 isSaving = true
                                 val result = settingsService.updateHelpCenterFAQs(faqs)
                                 if (result is com.mgacreative.mgaglobal.core.error.AppResult.Success) {
-                                    snackbarHostState.showSnackbar("Ä°Ã§erik baÅŸarÄ±yla kaydedildi.")
+                                    snackbarHostState.showSnackbar("İçerik başarıyla kaydedildi.")
                                 } else {
-                                    snackbarHostState.showSnackbar("Hata: KayÄ±t baÅŸarÄ±sÄ±z.")
+                                    snackbarHostState.showSnackbar("Hata: Kayıt başarısız.")
                                 }
                                 isSaving = false
                             }
@@ -187,9 +187,9 @@ fun AdminHelpCenterScreen(
                             isSaving = true
                             val result = settingsService.updateHelpCenterFAQs(faqs)
                             if (result is com.mgacreative.mgaglobal.core.error.AppResult.Success) {
-                                snackbarHostState.showSnackbar("Ä°Ã§erik baÅŸarÄ±yla kaydedildi.")
+                                snackbarHostState.showSnackbar("İçerik başarıyla kaydedildi.")
                             } else {
-                                snackbarHostState.showSnackbar("Hata: KayÄ±t baÅŸarÄ±sÄ±z.")
+                                snackbarHostState.showSnackbar("Hata: Kayıt başarısız.")
                             }
                             isSaving = false
                         }
@@ -201,7 +201,7 @@ fun AdminHelpCenterScreen(
                     if (isSaving) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
                     } else {
-                        Text("DeÄŸiÅŸiklikleri YayÄ±nla", fontWeight = FontWeight.Bold)
+                        Text("Değişiklikleri Yayınla", fontWeight = FontWeight.Bold)
                     }
                 }
             }

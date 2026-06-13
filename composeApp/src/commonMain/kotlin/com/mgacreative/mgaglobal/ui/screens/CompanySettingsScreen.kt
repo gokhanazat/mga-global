@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.screens
+package com.mgacreative.mgaglobal.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -185,7 +185,7 @@ fun CompanySettingsScreen(paddingValues: PaddingValues, onBackClick: () -> Unit)
                                 if (logoData is String && logoData.startsWith("http")) {
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
-                                        text = "TarayÄ±cÄ±da Kontrol Et",
+                                        text = "Tarayıcıda Kontrol Et",
                                         fontSize = 8.sp,
                                         color = Color.Gray,
                                         modifier = Modifier.clickable { try { uriHandler.openUri(logoData) } catch(e: Exception) {} }

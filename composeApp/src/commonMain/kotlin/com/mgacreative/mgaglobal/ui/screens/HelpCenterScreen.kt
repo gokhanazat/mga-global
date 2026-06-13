@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.screens
+package com.mgacreative.mgaglobal.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -33,7 +33,7 @@ import com.mgacreative.mgaglobal.core.domain.auth.FAQItem
 fun HelpCenterScreen(onBackClick: () -> Unit) {
     val scope = rememberCoroutineScope()
     val settingsService = remember { SettingsService() }
-    var contactEmail by remember { mutableStateOf("YÃ¼kleniyor...") }
+    var contactEmail by remember { mutableStateOf("Yükleniyor...") }
     var faqList by remember { mutableStateOf<List<FAQItem>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
@@ -93,7 +93,7 @@ fun HelpCenterScreen(onBackClick: () -> Unit) {
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "Merhaba, nasÄ±l yardÄ±mcÄ± olabiliriz?",
+                            "Merhaba, nasıl yardımcı olabiliriz?",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -102,7 +102,7 @@ fun HelpCenterScreen(onBackClick: () -> Unit) {
 
                 if (faqList.isEmpty()) {
                     item {
-                        Text("HenÃ¼z SSS eklenmemiÅŸ.", color = Color.Gray, modifier = Modifier.padding(16.dp))
+                        Text("Henüz SSS eklenmemiş.", color = Color.Gray, modifier = Modifier.padding(16.dp))
                     }
                 } else {
                     items(faqList) { item ->
@@ -118,7 +118,7 @@ fun HelpCenterScreen(onBackClick: () -> Unit) {
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text("Hala sorunuz mu var?", fontWeight = FontWeight.Bold)
-                            Text("Destek ekibimize e-posta gÃ¶ndererek ulaÅŸabilirsiniz.", style = MaterialTheme.typography.bodySmall)
+                            Text("Destek ekibimize e-posta göndererek ulaşabilirsiniz.", style = MaterialTheme.typography.bodySmall)
                             Spacer(Modifier.height(8.dp))
                             Text(contactEmail, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                         }

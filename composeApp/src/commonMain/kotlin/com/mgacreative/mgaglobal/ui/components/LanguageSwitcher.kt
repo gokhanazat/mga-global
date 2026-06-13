@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.components
+package com.mgacreative.mgaglobal.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,12 +27,12 @@ fun LanguageSwitcher(
     val scope = rememberCoroutineScope()
 
     val languages = listOf(
-        LanguageOption("TÃ¼rkÃ§e", "tr"),
+        LanguageOption("Türkçe", "tr"),
         LanguageOption("English", "en"),
         LanguageOption("Deutsch", "de"),
-        LanguageOption("Ğ ÑƒÑÑĞºĞ¸Ğ¹", "ru"),
-        LanguageOption("Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©", "ar"),
-        LanguageOption("ä¸­æ–‡", "zh")
+        LanguageOption("уѺ", "ru"),
+        LanguageOption("العربية", "ar"),
+        LanguageOption("中文", "zh")
     )
 
     Box(modifier = modifier) {

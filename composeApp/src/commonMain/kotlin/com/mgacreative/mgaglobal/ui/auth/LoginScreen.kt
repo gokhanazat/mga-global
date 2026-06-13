@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.auth
+package com.mgacreative.mgaglobal.ui.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -49,7 +49,7 @@ fun LoginScreen(
         val screenWidth = maxWidth
         val isWeb = screenWidth > 800.dp
         
-        // DÄ±ÅŸ Arka Plan: Web'de Lacivert
+        // Dış Arka Plan: Web'de Lacivert
         Box(modifier = Modifier.fillMaxSize().background(if (isWeb) Color(0xFF0F172A) else MaterialTheme.colorScheme.primary))
 
         Box(
@@ -94,9 +94,9 @@ fun LoginScreen(
                         modifier = Modifier.padding(32.dp).fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Ãœye GiriÅŸi", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
+                        Text(text = "Üye Girişi", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = "Sicil numaranÄ±z ile sisteme eriÅŸin", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                        Text(text = "Sicil numaranız ile sisteme erişin", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
                         Spacer(modifier = Modifier.height(32.dp))
 
                         if (errorMessage != null) {
@@ -116,7 +116,7 @@ fun LoginScreen(
                         OutlinedTextField(
                             value = registryNumber,
                             onValueChange = { registryNumber = it; errorMessage = null },
-                            label = { Text("Sicil NumarasÄ±") },
+                            label = { Text("Sicil Numarası") },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             leadingIcon = { Icon(Icons.Default.Person, contentDescription = null, tint = Color.Gray) },
@@ -131,7 +131,7 @@ fun LoginScreen(
                         OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },
-                            label = { Text("Åifre") },
+                            label = { Text("ifre") },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = Color.Gray) },
@@ -151,7 +151,7 @@ fun LoginScreen(
                         Button(
                             onClick = {
                                 if (registryNumber.isBlank() || password.isBlank()) {
-                                    errorMessage = "LÃ¼tfen alanlarÄ± doldurun"
+                                    errorMessage = "Lütfen alanları doldurun"
                                     return@Button
                                 }
                                 isLoading = true
@@ -180,9 +180,9 @@ fun LoginScreen(
                                                     SessionManager.startSession(registryNumber, role)
                                                     AuditDomainService.logLoginAction(registryNumber, role.name, true)
                                                     onLoginSuccess()
-                                                } else { errorMessage = "GiriÅŸ baÅŸarÄ±sÄ±z" }
+                                                } else { errorMessage = "Giriş başarısız" }
                                             }
-                                    } else { errorMessage = "Sicil numarasÄ± listede yok" }
+                                    } else { errorMessage = "Sicil numarası listede yok" }
                                     isLoading = false
                                 }
                             },

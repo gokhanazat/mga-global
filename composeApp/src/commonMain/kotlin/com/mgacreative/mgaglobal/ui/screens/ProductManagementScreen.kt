@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.screens
+package com.mgacreative.mgaglobal.ui.screens
 
 import com.mgacreative.mgaglobal.getNowMillis
 import com.mgacreative.mgaglobal.core.auth.SessionManager
@@ -95,27 +95,27 @@ fun ProductManagementScreen(
     @OptIn(ExperimentalEncodingApi::class)
     val imagePicker = rememberFilePickerLauncher(
         type = PickerType.Image,
-        title = "ÃœrÃ¼n Resmi SeÃ§"
+        title = "Ürün Resmi Seç"
     ) { file ->
         if (file != null) {
             scope.launch {
                 try {
                     val bytes = file.readBytes()
                     
-                    // 1. Dosya boyutu kontrolÃ¼ (1MB sÄ±nÄ±rÄ±)
+                    // 1. Dosya boyutu kontrolü (1MB sınırı)
                     if (bytes.size > 1048576) {
-                        snackbarHostState.showSnackbar("Dosya Ã§ok bÃ¼yÃ¼k (${bytes.size / 1024f.toInt()} KB). LÃ¼tfen 1MB altÄ±nda seÃ§in.")
+                        snackbarHostState.showSnackbar("Dosya çok büyük (${bytes.size / 1024f.toInt()} KB). Lütfen 1MB altında seçin.")
                         return@launch
                     }
 
-                    // 2. Arka planda sÄ±kÄ±ÅŸtÄ±rma
+                    // 2. Arka planda sıkıştırma
                     val compressedBytes = ImageResizer.compressImage(bytes, 800, 800, 85)
                     
-                    // 3. WebP Base64 Ã§evrimi
+                    // 3. WebP Base64 çevrimi
                     val base64 = Base64.Default.encode(compressedBytes)
                     productImageBase64 = "data:image/webp;base64,$base64"
                     
-                    // snackbarHostState.showSnackbar("Resim hazÄ±r.")
+                    // snackbarHostState.showSnackbar("Resim hazır.")
                 } catch (e: Exception) {
                     snackbarHostState.showSnackbar("Resim eklenirken hata: ${e.message}")
                 }
@@ -174,7 +174,7 @@ fun ProductManagementScreen(
                                 if (model != null) {
                                     coil3.compose.AsyncImage(
                                         model = model,
-                                        contentDescription = "ÃœrÃ¼n Resmi",
+                                        contentDescription = "Ürün Resmi",
                                         modifier = Modifier.fillMaxSize(),
                                         contentScale = ContentScale.Crop
                                     )
@@ -182,14 +182,14 @@ fun ProductManagementScreen(
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                         Icon(Icons.Default.Image, contentDescription = null, modifier = Modifier.size(28.dp), tint = Color.Gray)
                                         Spacer(modifier = Modifier.height(4.dp))
-                                        Text("Resim HatasÄ±", color = Color.Gray, fontSize = 11.sp)
+                                        Text("Resim Hatası", color = Color.Gray, fontSize = 11.sp)
                                     }
                                 }
                             } else {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Icon(Icons.Default.Image, contentDescription = null, modifier = Modifier.size(28.dp), tint = Color.Gray)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("Resim SeÃ§", color = Color.Gray, fontSize = 11.sp)
+                                    Text("Resim Seç", color = Color.Gray, fontSize = 11.sp)
                                 }
                             }
                         }
@@ -197,7 +197,7 @@ fun ProductManagementScreen(
                         OutlinedTextField(
                             value = productName,
                             onValueChange = { productName = it },
-                            label = { Text("ÃœrÃ¼n AdÄ± *") },
+                            label = { Text("Ürün Adı *") },
                             modifier = Modifier.fillMaxWidth(),
                             leadingIcon = { Icon(Icons.Default.Inventory, null) },
                             shape = RoundedCornerShape(12.dp),
@@ -209,7 +209,7 @@ fun ProductManagementScreen(
                             OutlinedTextField(
                                 value = productCategory,
                                 onValueChange = { },
-                                label = { Text("SektÃ¶r / Meslek Grubu *") },
+                                label = { Text("Sektör / Meslek Grubu *") },
                                 modifier = Modifier.fillMaxWidth(),
                                 leadingIcon = { Icon(Icons.Default.Category, null) },
                                 trailingIcon = { 
@@ -233,7 +233,7 @@ fun ProductManagementScreen(
                             ) {
                                 if (sectors.isEmpty()) {
                                     DropdownMenuItem(
-                                        text = { Text("HenÃ¼z sektÃ¶r tanÄ±mlanmamÄ±ÅŸ", color = Color.Gray) },
+                                        text = { Text("Henüz sektör tanımlanmamış", color = Color.Gray) },
                                         onClick = { sectorExpanded = false }
                                     )
                                 } else {
@@ -267,7 +267,7 @@ fun ProductManagementScreen(
                         OutlinedTextField(
                             value = productDescription,
                             onValueChange = { productDescription = it },
-                            label = { Text("ÃœrÃ¼n AÃ§Ä±klamasÄ± *") },
+                            label = { Text("Ürün Açıklaması *") },
                             modifier = Modifier.fillMaxWidth().height(100.dp), // Slightly smaller
                             leadingIcon = { Icon(Icons.Default.Description, null) },
                             shape = RoundedCornerShape(12.dp),
@@ -281,7 +281,7 @@ fun ProductManagementScreen(
                         if (isSaving) return@Button
                         scope.launch {
                             if (productName.isBlank() || productCategory.isBlank() || productDescription.isBlank()) {
-                                snackbarHostState.showSnackbar("LÃ¼tfen ÃœrÃ¼n AdÄ±, SektÃ¶r ve AÃ§Ä±klama alanlarÄ±nÄ± doldurunuz.")
+                                snackbarHostState.showSnackbar("Lütfen Ürün Adı, Sektör ve Açıklama alanlarını doldurunuz.")
                                 return@launch
                             }
                             // Image is no longer required for now
@@ -299,7 +299,7 @@ fun ProductManagementScreen(
                             } else {
                                 val companyResult = companyService.getOwnCompany()
                                 val company = companyResult.getOrNull()
-                                val companyName = company?.name ?: "Bilinmeyen Åirket"
+                                val companyName = company?.name ?: "Bilinmeyen irket"
                                 val country = company?.country ?: "Bilinmiyor"
 
                                 ShowroomProduct(
@@ -320,7 +320,7 @@ fun ProductManagementScreen(
                             val saveResult = productService.saveProduct(product)
                             
                             if (saveResult.isSuccess) {
-                                val successMsg = if (existingProduct != null) "ÃœrÃ¼n baÅŸarÄ±yla gÃ¼ncellendi!" else "ÃœrÃ¼n baÅŸarÄ±yla eklendi!"
+                                val successMsg = if (existingProduct != null) "Ürün başarıyla güncellendi!" else "Ürün başarıyla eklendi!"
                                 snackbarHostState.showSnackbar(successMsg)
                                 if (existingProduct == null) {
                                     AuditDomainService.logContentAction(product.ownerId, "MEMBER", product.id, "Showroom", ActionType.CREATE)
@@ -351,14 +351,14 @@ fun ProductManagementScreen(
                     } else {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(if (existingProduct != null) "GÃ¼ncelle" else "ÃœrÃ¼nÃ¼ Kaydet", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text(if (existingProduct != null) "Güncelle" else "Ürünü Kaydet", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
                 }
                 
                 Spacer(modifier = Modifier.height(20.dp))
                 
                 if (userProducts.isNotEmpty()) {
-                    Text("ÃœrÃ¼nleriniz", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Ürünleriniz", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     userProducts.forEach { product ->
                         Card(
                             modifier = Modifier.fillMaxWidth().clickable { 

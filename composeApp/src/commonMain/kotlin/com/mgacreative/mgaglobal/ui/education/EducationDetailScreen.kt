@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.education
+package com.mgacreative.mgaglobal.ui.education
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -41,7 +41,7 @@ fun EducationDetailScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("EÄŸitim DetayÄ±", fontWeight = FontWeight.Bold) },
+                title = { Text("Eğitim Detayı", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IconButton(onClick = onBackClick) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Geri") } },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color(0xFF0F172A), titleContentColor = Color.White, navigationIconContentColor = Color.White)
             )
@@ -73,18 +73,18 @@ fun EducationDetailScreen(
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(edu.title, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold, color = Color(0xFF0F172A))
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text("EÄŸitmen: ${edu.instructor}", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                                Text("Eğitmen: ${edu.instructor}", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
                                 
                                 HorizontalDivider(modifier = Modifier.padding(vertical = 24.dp))
                                 
-                                // EÄŸitim Ã–zeti (Her zaman gÃ¶sterilir)
-                                Text("EÄŸitim Ã–zeti", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
+                                // Eğitim Özeti (Her zaman gösterilir)
+                                Text("Eğitim Özeti", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Text(edu.contentText, style = MaterialTheme.typography.bodyLarge, lineHeight = 28.sp, color = Color(0xFF334155))
                                 
                                 Spacer(modifier = Modifier.height(32.dp))
 
-                                // EÄŸer video/iÃ§erik linki varsa buton olarak gÃ¶ster
+                                // Eğer video/içerik linki varsa buton olarak göster
                                 if (!edu.contentUrl.isNullOrBlank()) {
                                     Card(
                                         modifier = Modifier.fillMaxWidth(),
@@ -98,14 +98,14 @@ fun EducationDetailScreen(
                                             Icon(Icons.Default.PlayCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(40.dp))
                                             Spacer(modifier = Modifier.width(16.dp))
                                             Column(modifier = Modifier.weight(1f)) {
-                                                Text("EÄŸitim Ä°Ã§eriÄŸi Mevcut", fontWeight = FontWeight.Bold)
-                                                Text("Videoyu veya dÃ¶kÃ¼manÄ± harici olarak aÃ§Ä±n", fontSize = 12.sp, color = Color.Gray)
+                                                Text("Eğitim İçeriği Mevcut", fontWeight = FontWeight.Bold)
+                                                Text("Videoyu veya dökümanı harici olarak açın", fontSize = 12.sp, color = Color.Gray)
                                             }
                                             Button(
                                                 onClick = { openUrl(edu.contentUrl!!) },
                                                 shape = RoundedCornerShape(8.dp)
                                             ) {
-                                                Text("Ä°Ã§eriÄŸi AÃ§")
+                                                Text("İçeriği Aç")
                                             }
                                         }
                                     }
@@ -123,7 +123,7 @@ fun EducationDetailScreen(
                                         shape = RoundedCornerShape(16.dp),
                                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F172A))
                                     ) {
-                                        Text("SÄ±nava BaÅŸla", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
+                                        Text("Sınava Başla", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(40.dp))

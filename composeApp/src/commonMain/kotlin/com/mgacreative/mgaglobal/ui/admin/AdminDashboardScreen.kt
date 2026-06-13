@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.admin
+package com.mgacreative.mgaglobal.ui.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -112,10 +112,10 @@ fun AdminDashboardScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("YÃ¶netim Paneli", fontWeight = FontWeight.Bold, color = Color.White) },
+                title = { Text("Yönetim Paneli", fontWeight = FontWeight.Bold, color = Color.White) },
                 actions = {
                     IconButton(onClick = onLogout) {
-                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Ã‡Ä±kÄ±ÅŸ", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Çıkış", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -140,13 +140,13 @@ fun AdminDashboardScreen(
             ) {
                 // Header
                 Text(
-                    text = "HoÅŸ Geldiniz, Sistem YÃ¶neticisi",
+                    text = "Hoş Geldiniz, Sistem Yöneticisi",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "Platform yetkilerini ve Ã¶zet istatistikleri buradan takip edebilirsiniz.",
+                    text = "Platform yetkilerini ve özet istatistikleri buradan takip edebilirsiniz.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray,
                     modifier = Modifier.padding(top = 4.dp, bottom = 24.dp)
@@ -165,7 +165,7 @@ fun AdminDashboardScreen(
                         
                         Spacer(modifier = Modifier.width(24.dp))
                         
-                        // Right Column: SektÃ¶rel Analiz Table
+                        // Right Column: Sektörel Analiz Table
                         Card(
                             modifier = Modifier.weight(1.2f).fillMaxHeight(),
                             shape = RoundedCornerShape(16.dp),
@@ -203,8 +203,8 @@ fun StatsCardsSection(totalCompanies: Int, activeRegistries: Int, totalSectors: 
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        BigStatCard("KayÄ±tlÄ± Ä°ÅŸletme", totalCompanies.toString(), Icons.Default.Business, Color(0xFF4361EE), Modifier.weight(1f), isLoading)
-        BigStatCard("Toplam SektÃ¶r", totalSectors.toString(), Icons.Default.Category, Color(0xFF7209B7), Modifier.weight(1f), isLoading)
+        BigStatCard("Kayıtlı İşletme", totalCompanies.toString(), Icons.Default.Business, Color(0xFF4361EE), Modifier.weight(1f), isLoading)
+        BigStatCard("Toplam Sektör", totalSectors.toString(), Icons.Default.Category, Color(0xFF7209B7), Modifier.weight(1f), isLoading)
     }
     Spacer(modifier = Modifier.height(16.dp))
     Row(
@@ -212,7 +212,7 @@ fun StatsCardsSection(totalCompanies: Int, activeRegistries: Int, totalSectors: 
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         BigStatCard("Aktif Sicil", activeRegistries.toString(), Icons.Default.AppRegistration, Color(0xFF4CC9F0), Modifier.weight(1f), isLoading)
-        BigStatCard("Toplam EÄŸitim", totalEducations.toString(), Icons.Default.School, Color(0xFFF72585), Modifier.weight(1f), isLoading)
+        BigStatCard("Toplam Eğitim", totalEducations.toString(), Icons.Default.School, Color(0xFFF72585), Modifier.weight(1f), isLoading)
     }
 }
 
@@ -253,14 +253,14 @@ fun BigStatCard(label: String, value: String, icon: ImageVector, color: Color, m
 @Composable
 fun SectorStatsTable(sectors: List<com.mgacreative.mgaglobal.core.domain.sector.Sector>, companies: List<com.mgacreative.mgaglobal.core.domain.b2b.B2BCompany>, isLoading: Boolean) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("SektÃ¶rel Analiz", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-        Text("SektÃ¶rlerdeki kayÄ±tlÄ± firma ve Ã¼rÃ¼n daÄŸÄ±lÄ±mÄ±.", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+        Text("Sektörel Analiz", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+        Text("Sektörlerdeki kayıtlı firma ve ürün dağılımı.", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
         Spacer(modifier = Modifier.height(16.dp))
         
         Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
-            Text("SektÃ¶r AdÄ±", modifier = Modifier.weight(1.5f), fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+            Text("Sektör Adı", modifier = Modifier.weight(1.5f), fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
             Text("Firma", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
-            Text("ÃœrÃ¼n", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+            Text("Ürün", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
         }
         HorizontalDivider()
         
@@ -272,8 +272,8 @@ fun SectorStatsTable(sectors: List<com.mgacreative.mgaglobal.core.domain.sector.
             Column(modifier = Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) {
                 sectors.forEach { sector ->
                     val companyCount = companies.count { it.sector == sector.name }
-                    // ÃœrÃ¼n sayÄ±mÄ± iÃ§in her firmanÄ±n Ã¼rÃ¼n listesinin boyutu gerekiyor, 
-                    // Performans iÃ§in ÅŸimdilik bunu bir placeholder veya 0 olarak bÄ±rakabiliriz (tÃ¼m Ã¼rÃ¼nleri fetch etmedik)
+                    // Ürün sayımı için her firmanın ürün listesinin boyutu gerekiyor, 
+                    // Performans için şimdilik bunu bir placeholder veya 0 olarak bırakabiliriz (tüm ürünleri fetch etmedik)
                     val productCount = 0 
                     
                     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -300,14 +300,14 @@ fun AdminModulesGrid(
     onNavigateToHelpCenter: () -> Unit
 ) {
     val adminModules = listOf(
-        AdminModule("Sicil No", "Yeni Ã¼ye sicil no ekle.", Icons.Default.AppRegistration, Color(0xFF4361EE), onNavigateToRegistry),
-        AdminModule("Yetki", "Rolleri dÃ¼zenle.", Icons.Default.People, Color(0xFF3A0CA3), onNavigateToUsers),
-        AdminModule("Log", "LoglarÄ± incele.", Icons.Default.History, Color(0xFF4CC9F0), onNavigateToAuditLog),
-        AdminModule("EÄŸitim", "ModÃ¼lleri tanÄ±mla.", Icons.Default.School, Color(0xFFF72585), onNavigateToEducations),
-        AdminModule("SektÃ¶r", "SektÃ¶rleri yÃ¶net.", Icons.Default.Category, Color(0xFF7209B7), onNavigateToSectors),
-        AdminModule("Duyuru", "DuyurularÄ± yÃ¶net.", Icons.Default.Campaign, Color(0xFFF72585), onNavigateToAnnouncements),
-        AdminModule("Uzman", "UzmanlarÄ± yÃ¶net.", Icons.Default.SupportAgent, Color(0xFF4361EE), onNavigateToConsultancy),
-        AdminModule("YardÄ±m", "SSS iÃ§erikleri.", Icons.Default.LiveHelp, Color(0xFF4CC9F0), onNavigateToHelpCenter)
+        AdminModule("Sicil No", "Yeni üye sicil no ekle.", Icons.Default.AppRegistration, Color(0xFF4361EE), onNavigateToRegistry),
+        AdminModule("Yetki", "Rolleri düzenle.", Icons.Default.People, Color(0xFF3A0CA3), onNavigateToUsers),
+        AdminModule("Log", "Logları incele.", Icons.Default.History, Color(0xFF4CC9F0), onNavigateToAuditLog),
+        AdminModule("Eğitim", "Modülleri tanımla.", Icons.Default.School, Color(0xFFF72585), onNavigateToEducations),
+        AdminModule("Sektör", "Sektörleri yönet.", Icons.Default.Category, Color(0xFF7209B7), onNavigateToSectors),
+        AdminModule("Duyuru", "Duyuruları yönet.", Icons.Default.Campaign, Color(0xFFF72585), onNavigateToAnnouncements),
+        AdminModule("Uzman", "Uzmanları yönet.", Icons.Default.SupportAgent, Color(0xFF4361EE), onNavigateToConsultancy),
+        AdminModule("Yardım", "SSS içerikleri.", Icons.Default.LiveHelp, Color(0xFF4CC9F0), onNavigateToHelpCenter)
     )
 
     LazyVerticalGrid(
@@ -342,7 +342,7 @@ fun ExportButton(
                         content = csvContent,
                         mimeType = "text/csv; charset=utf-8"
                     )
-                    snackbarHostState.showSnackbar("DÄ±ÅŸa aktarma tamamlandÄ±.")
+                    snackbarHostState.showSnackbar("Dışa aktarma tamamlandı.")
                 } catch (e: Exception) {
                     snackbarHostState.showSnackbar("Hata: ${e.message}")
                 }
@@ -356,7 +356,7 @@ fun ExportButton(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Default.Download, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
-            Text("Ä°ÅŸletme Profillerini Export Et (CSV)")
+            Text("İşletme Profillerini Export Et (CSV)")
         }
     }
 }
@@ -366,7 +366,7 @@ fun AdminModuleCard(module: AdminModule) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp) // Web'de daha kompakt olmasÄ± iÃ§in yÃ¼ksekliÄŸi dÃ¼ÅŸÃ¼rdÃ¼k
+            .height(110.dp) // Web'de daha kompakt olması için yüksekliği düşürdük
             .clickable { module.onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),

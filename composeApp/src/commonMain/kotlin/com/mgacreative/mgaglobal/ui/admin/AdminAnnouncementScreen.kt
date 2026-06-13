@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.admin
+package com.mgacreative.mgaglobal.ui.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -82,7 +82,7 @@ fun AdminAnnouncementScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Duyuru YÃ¶netimi", fontWeight = FontWeight.Bold, color = Color.White) },
+                title = { Text("Duyuru Yönetimi", fontWeight = FontWeight.Bold, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) { 
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri", tint = Color.White) 
@@ -126,7 +126,7 @@ fun AdminAnnouncementScreen(
             ) {
                 item {
                     Text(
-                        "TÃ¼m Duyurular", 
+                        "Tüm Duyurular", 
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = Color.DarkGray,
@@ -137,7 +137,7 @@ fun AdminAnnouncementScreen(
                 if (announcements.isEmpty()) {
                     item {
                         Box(Modifier.fillMaxWidth().padding(top = 40.dp), contentAlignment = Alignment.Center) {
-                            Text("HenÃ¼z duyuru eklenmemiÅŸ.", color = Color.Gray)
+                            Text("Henüz duyuru eklenmemiş.", color = Color.Gray)
                         }
                     }
                 }
@@ -149,10 +149,10 @@ fun AdminAnnouncementScreen(
                             scope.launch {
                                 val res = announcementService.toggleAnnouncementStatus(announcement.id, newStatus)
                                 if (res.isSuccess) {
-                                    snackbarHostState.showSnackbar(if (newStatus) "Duyuru aktifleÅŸtirildi" else "Duyuru gizlendi")
+                                    snackbarHostState.showSnackbar(if (newStatus) "Duyuru aktifleştirildi" else "Duyuru gizlendi")
                                     fetchAnnouncements()
                                 } else {
-                                    snackbarHostState.showSnackbar("Durum gÃ¼ncellenirken hata oluÅŸtu")
+                                    snackbarHostState.showSnackbar("Durum güncellenirken hata oluştu")
                                 }
                             }
                         },
@@ -181,7 +181,7 @@ fun AdminAnnouncementScreen(
                                     snackbarHostState.showSnackbar("Duyuru silindi")
                                     fetchAnnouncements()
                                 } else {
-                                    snackbarHostState.showSnackbar("Duyuru silinirken hata oluÅŸtu")
+                                    snackbarHostState.showSnackbar("Duyuru silinirken hata oluştu")
                                 }
                             }
                         }
@@ -194,26 +194,26 @@ fun AdminAnnouncementScreen(
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text(if (currentAnnouncement == null) "Yeni Duyuru Ekle" else "Duyuruyu DÃ¼zenle", fontWeight = FontWeight.Bold) },
+            title = { Text(if (currentAnnouncement == null) "Yeni Duyuru Ekle" else "Duyuruyu Düzenle", fontWeight = FontWeight.Bold) },
             text = {
                 val scrollState = rememberScrollState()
                 Column(
                     modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp).verticalScroll(scrollState),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text("TÃ¼rkÃ§e (VarsayÄ±lan)", fontWeight = FontWeight.Bold, color = Color(0xFF4361EE), fontSize = 12.sp)
-                    OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("BaÅŸlÄ±k") }, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Ä°Ã§erik") }, modifier = Modifier.fillMaxWidth())
+                    Text("Türkçe (Varsayılan)", fontWeight = FontWeight.Bold, color = Color(0xFF4361EE), fontSize = 12.sp)
+                    OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Başlık") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("İçerik") }, modifier = Modifier.fillMaxWidth())
 
                     Text("English", fontWeight = FontWeight.Bold, color = Color.Gray, fontSize = 12.sp)
                     OutlinedTextField(value = titleEn, onValueChange = { titleEn = it }, label = { Text("Title") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = descriptionEn, onValueChange = { descriptionEn = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
 
-                    Text("Arabic (Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©)", fontWeight = FontWeight.Bold, color = Color.Gray, fontSize = 12.sp)
+                    Text("Arabic (العربية)", fontWeight = FontWeight.Bold, color = Color.Gray, fontSize = 12.sp)
                     OutlinedTextField(value = titleAr, onValueChange = { titleAr = it }, label = { Text("Title") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = descriptionAr, onValueChange = { descriptionAr = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
 
-                    Text("Chinese (ä¸­æ–‡)", fontWeight = FontWeight.Bold, color = Color.Gray, fontSize = 12.sp)
+                    Text("Chinese (中文)", fontWeight = FontWeight.Bold, color = Color.Gray, fontSize = 12.sp)
                     OutlinedTextField(value = titleZh, onValueChange = { titleZh = it }, label = { Text("Title") }, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = descriptionZh, onValueChange = { descriptionZh = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
 
@@ -226,7 +226,7 @@ fun AdminAnnouncementScreen(
                         Switch(checked = isActive, onCheckedChange = { isActive = it })
                     }
                     
-                    Text("Renk SeÃ§imi", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
+                    Text("Renk Seçimi", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         presetColors.forEach { colorStr ->
                             Box(
@@ -265,7 +265,7 @@ fun AdminAnnouncementScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) { Text("Kaydet") }
             },
-            dismissButton = { TextButton(onClick = { showDialog = false }) { Text("Ä°ptal") } }
+            dismissButton = { TextButton(onClick = { showDialog = false }) { Text("İptal") } }
         )
     }
 }
@@ -330,7 +330,7 @@ fun AnnouncementListItem(
                     modifier = Modifier.padding(end = 8.dp)
                 )
                 IconButton(onClick = onEdit) { 
-                    Icon(Icons.Default.Edit, "DÃ¼zenle", tint = Color(0xFF4361EE).copy(alpha = 0.7f)) 
+                    Icon(Icons.Default.Edit, "Düzenle", tint = Color(0xFF4361EE).copy(alpha = 0.7f)) 
                 }
                 IconButton(onClick = onDelete) { 
                     Icon(Icons.Default.Delete, "Sil", tint = Color(0xFFE74C3C).copy(alpha = 0.7f)) 

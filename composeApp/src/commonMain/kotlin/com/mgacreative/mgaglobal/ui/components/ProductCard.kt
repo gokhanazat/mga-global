@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.components
+package com.mgacreative.mgaglobal.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -74,7 +74,7 @@ fun ProductCard(
                     if (model != null) {
                         coil3.compose.AsyncImage(
                             model = model,
-                            contentDescription = "ÃœrÃ¼n Resmi",
+                            contentDescription = "Ürün Resmi",
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop
                         )
@@ -111,7 +111,7 @@ fun ProductCard(
                         DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                             if (onEditClick != null) {
                                 DropdownMenuItem(
-                                    text = { Text("DÃ¼zenle") },
+                                    text = { Text("Düzenle") },
                                     onClick = { showMenu = false; onEditClick() },
                                     leadingIcon = { Icon(Icons.Default.Edit, "Edit") }
                                 )
