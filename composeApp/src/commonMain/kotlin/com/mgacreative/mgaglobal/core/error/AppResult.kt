@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.core.error
+package com.mgacreative.mgaglobal.core.error
 
 import kotlinx.coroutines.CancellationException
 
@@ -37,6 +37,8 @@ suspend inline fun <T> safeCall(crossinline action: suspend () -> T): AppResult<
     } catch (e: Exception) {
         // We shouldn't silently swallow CancellationException in Coroutines
         if (e is CancellationException) throw e
+        e.printStackTrace()
+        println("safeCall Error: ${e.message}")
         AppResult.Error(e.mapToAppError())
     }
 }

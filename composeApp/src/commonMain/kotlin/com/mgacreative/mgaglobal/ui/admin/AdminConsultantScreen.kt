@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.admin
+package com.mgacreative.mgaglobal.ui.admin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -125,6 +125,8 @@ fun AdminConsultantScreen(paddingValues: PaddingValues, onBackClick: () -> Unit)
                             refresh()
                             showAddDialog = false
                             snackbarHostState.showSnackbar("Danışman kaydedildi")
+                        } else if (res is com.mgacreative.mgaglobal.core.error.AppResult.Error) {
+                            snackbarHostState.showSnackbar("Hata: ${res.error.message ?: "Danışman kaydedilemedi"}")
                         }
                     }
                 }

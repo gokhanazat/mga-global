@@ -199,10 +199,12 @@ fun AdminSectorsScreen(
                                 groupNo = groupNo.trim()
                             )
                             val res = sectorService.saveSector(sector)
-                            if (res.isSuccess) {
+                            if (res is com.mgacreative.mgaglobal.core.error.AppResult.Success) {
                                 snackbarHostState.showSnackbar(if (currentSector == null) "Sektör eklendi" else "Sektör güncellendi")
                                 fetchSectors()
                                 showDialog = false
+                            } else if (res is com.mgacreative.mgaglobal.core.error.AppResult.Error) {
+                                snackbarHostState.showSnackbar("Hata: ${res.error.message ?: "İşlem başarısız"}")
                             }
                         }
                     },

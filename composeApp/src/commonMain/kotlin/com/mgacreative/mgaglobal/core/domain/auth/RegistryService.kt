@@ -6,13 +6,16 @@ import com.mgacreative.mgaglobal.core.error.AppResult
 import com.mgacreative.mgaglobal.core.error.safeCall
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
 data class RegistryEntry(
     val id: String = "",
     val number: String = "",
+    @SerialName("owner_name")
     val ownerName: String = "",
     val active: Boolean = true,
+    @SerialName("created_at")
     val createdAt: Long = 0L
 )
 

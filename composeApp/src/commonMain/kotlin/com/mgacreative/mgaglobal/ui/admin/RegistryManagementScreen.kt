@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.admin
+package com.mgacreative.mgaglobal.ui.admin
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -81,8 +81,10 @@ fun RegistryManagementScreen(
                 val number = parts[0].trim().filter { it.isDigit() }
                 val name = parts[1].trim()
                 if (number.isNotEmpty()) {
-                    registryService.addRegistryNumber(number, name)
-                    count++
+                    val res = registryService.addRegistryNumber(number, name)
+                    if (res is com.mgacreative.mgaglobal.core.error.AppResult.Success) {
+                        count++
+                    }
                 }
             }
         }
@@ -259,10 +261,14 @@ fun RegistryManagementScreen(
                 onDismiss = { showAddDialog = false },
                 onAdd = { number, name ->
                     scope.launch {
-                        registryService.addRegistryNumber(number, name)
-                        refreshData()
-                        showAddDialog = false
-                        snackbarHostState.showSnackbar("Sicil eklendi: $number")
+                        val res = registryService.addRegistryNumber(number, name)
+                        if (res is com.mgacreative.mgaglobal.core.error.AppResult.Success) {
+                            refreshData()
+                            showAddDialog = false
+                            snackbarHostState.showSnackbar("Sicil eklendi: $number")
+                        } else if (res is com.mgacreative.mgaglobal.core.error.AppResult.Error) {
+                            snackbarHostState.showSnackbar("Hata: ${res.error.message ?: "Sicil eklenemedi"}")
+                        }
                     }
                 }
             )

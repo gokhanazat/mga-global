@@ -254,10 +254,12 @@ fun AdminAnnouncementScreen(
                                 colorHex = colorHex, active = if (isActive) 1 else 0
                             )
                             val res = announcementService.saveAnnouncement(announcement)
-                            if (res.isSuccess) {
+                            if (res is com.mgacreative.mgaglobal.core.error.AppResult.Success) {
                                 snackbarHostState.showSnackbar("Kaydedildi")
                                 fetchAnnouncements()
                                 showDialog = false
+                            } else if (res is com.mgacreative.mgaglobal.core.error.AppResult.Error) {
+                                snackbarHostState.showSnackbar("Hata: ${res.error.message ?: "İşlem başarısız"}")
                             }
                         }
                     },
