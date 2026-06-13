@@ -39,10 +39,25 @@ function Resize-Image {
 $logoPath = "d:\AndroidStudioProjects\MGA_GLOBAL\yeni_logo.png"
 $resDir = "d:\AndroidStudioProjects\MGA_GLOBAL\composeApp\src\androidMain\res"
 
+# 1. Resize Adaptive Foreground (108dp equivalent)
 Resize-Image $logoPath "$resDir\mipmap-mdpi\ic_launcher_foreground.png" 108 108
 Resize-Image $logoPath "$resDir\mipmap-hdpi\ic_launcher_foreground.png" 162 162
 Resize-Image $logoPath "$resDir\mipmap-xhdpi\ic_launcher_foreground.png" 216 216
 Resize-Image $logoPath "$resDir\mipmap-xxhdpi\ic_launcher_foreground.png" 324 324
 Resize-Image $logoPath "$resDir\mipmap-xxxhdpi\ic_launcher_foreground.png" 432 432
 
-Write-Host "Logo successfully resized and copied to all mipmap directories!"
+# 2. Resize Legacy Launcher Icons (48dp equivalent)
+Resize-Image $logoPath "$resDir\mipmap-mdpi\ic_launcher.png" 48 48
+Resize-Image $logoPath "$resDir\mipmap-hdpi\ic_launcher.png" 72 72
+Resize-Image $logoPath "$resDir\mipmap-xhdpi\ic_launcher.png" 96 96
+Resize-Image $logoPath "$resDir\mipmap-xxhdpi\ic_launcher.png" 144 144
+Resize-Image $logoPath "$resDir\mipmap-xxxhdpi\ic_launcher.png" 192 192
+
+# 3. Resize Legacy Round Launcher Icons (48dp equivalent)
+Resize-Image $logoPath "$resDir\mipmap-mdpi\ic_launcher_round.png" 48 48
+Resize-Image $logoPath "$resDir\mipmap-hdpi\ic_launcher_round.png" 72 72
+Resize-Image $logoPath "$resDir\mipmap-xhdpi\ic_launcher_round.png" 96 96
+Resize-Image $logoPath "$resDir\mipmap-xxhdpi\ic_launcher_round.png" 144 144
+Resize-Image $logoPath "$resDir\mipmap-xxxhdpi\ic_launcher_round.png" 192 192
+
+Write-Host "All adaptive and legacy launcher icons successfully updated!"
