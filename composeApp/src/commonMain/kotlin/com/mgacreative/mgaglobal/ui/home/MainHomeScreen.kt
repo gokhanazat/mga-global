@@ -69,10 +69,15 @@ fun MainHomeScreen(
                 announcements = announcementsDef.await().getOrNull() ?: emptyList()
                 allCompanies = companiesDef.await().getOrNull() ?: emptyList()
                 val apiSectors = sectorsDef.await().getOrNull() ?: emptyList()
-                allSectors = apiSectors.sortedBy { it.groupNo.toIntOrNull() ?: 999 }
+                allSectors = if (apiSectors.isNotEmpty()) {
+                    apiSectors.sortedBy { it.groupNo.toIntOrNull() ?: 999 }
+                } else {
+                    defaultFallbackSectors
+                }
             }
         } catch (e: Exception) {
             println("MainHomeScreen Data Load Error: ${e.message}")
+            allSectors = defaultFallbackSectors
         } finally {
             isLoading = false
         }
@@ -435,5 +440,23 @@ private fun parseColorSafe(hex: String): Long {
         0xFF3B82F6
     }
 }
+
+private val defaultFallbackSectors = listOf(
+    Sector(id = "sec_1", name = "Bilişim", groupNo = "1", isActive = true),
+    Sector(id = "sec_2", name = "Danışmanlık", groupNo = "2", isActive = true),
+    Sector(id = "sec_3", name = "Dayanıklı Tüketim", groupNo = "3", isActive = true),
+    Sector(id = "sec_4", name = "Deri", groupNo = "4", isActive = true),
+    Sector(id = "sec_5", name = "Dış Ticaret", groupNo = "5", isActive = true),
+    Sector(id = "sec_6", name = "Elektronik", groupNo = "6", isActive = true),
+    Sector(id = "sec_7", name = "Enerji", groupNo = "7", isActive = true),
+    Sector(id = "sec_8", name = "Finans", groupNo = "8", isActive = true),
+    Sector(id = "sec_9", name = "Gıda", groupNo = "9", isActive = true),
+    Sector(id = "sec_10", name = "İnşaat", groupNo = "10", isActive = true),
+    Sector(id = "sec_11", name = "Lojistik", groupNo = "11", isActive = true),
+    Sector(id = "sec_12", name = "Mobilya", groupNo = "12", isActive = true),
+    Sector(id = "sec_13", name = "Otomotiv", groupNo = "13", isActive = true),
+    Sector(id = "sec_14", name = "Tekstil", groupNo = "14", isActive = true),
+    Sector(id = "sec_15", name = "Tarım", groupNo = "15", isActive = true)
+)
 
 
