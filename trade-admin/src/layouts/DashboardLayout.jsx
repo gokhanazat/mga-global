@@ -30,8 +30,8 @@ import {
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { auth } from '../firebase/config';
-import { signOut } from 'firebase/auth';
+import { useAuth } from '../hooks/useAuth';
+import { supabase } from '../supabaseClient';
 
 const drawerWidth = 260;
 
@@ -40,7 +40,7 @@ const DashboardLayout = ({ children }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const user = auth.currentUser;
+    const { user } = useAuth();
 
     const handleDrawerToggle = () => {
         setOpen(!open);
@@ -56,7 +56,7 @@ const DashboardLayout = ({ children }) => {
 
     const handleLogout = async () => {
         try {
-            await signOut(auth);
+            await supabase.auth.signOut();
             navigate('/login');
         } catch (error) {
             console.error("Error signing out:", error);
@@ -162,7 +162,7 @@ const DashboardLayout = ({ children }) => {
             >
                 <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', px: [1] }}>
                     <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'white', py: 2 }}>
-                        {open ? 'TradeBridge' : 'TB'}
+                        {open ? 'MGA GLOBAL' : 'MGA'}
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />

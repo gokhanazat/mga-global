@@ -28,17 +28,7 @@ import {
     Delete as DeleteIcon,
     Refresh as RefreshIcon
 } from '@mui/icons-material';
-import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    deleteDoc,
-    doc,
-    query,
-    orderBy
-} from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 import { formatDate } from '../utils/helpers';
 
 const Educations = () => {
@@ -59,13 +49,12 @@ const Educations = () => {
     const fetchEducations = async () => {
         setLoading(true);
         try {
-            const q = query(collection(db, 'educations'), orderBy('createdAt', 'desc'));
-            const querySnapshot = await getDocs(q);
-            const eduList = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setEducations(eduList);
+            const { data, error } = await supabase
+                .from('educations')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            setEducations(data || []);
         } catch (error) {
             console.error("Error fetching educations:", error);
             showSnackbar('Eğitimler yüklenirken bir hata oluştu.', 'error');
@@ -93,12 +82,26 @@ const Educations = () => {
         }
 
         try {
-            const docRef = await addDoc(collection(db, 'educations'), {
-                ...formData,
-                createdAt: Date.now()
-            });
+            const newEdu = {
+                title: formData.title,
+                description: formData.description,
+                video_url: formData.videoUrl || null,
+                pdf_url: formData.pdfUrl || null,
+                is_published: formData.isPublished,
+                created_at: Date.now()
+            };
 
-            setEducations(prev => [{ id: docRef.id, ...formData, createdAt: Date.now() }, ...prev]);
+            const { data, error } = await supabase
+                .from('educations')
+                .insert([newEdu])
+                .select();
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+                setEducations(prev => [data[0], ...prev]);
+            } else {
+                await fetchEducations();
+            }
             setDialogOpen(false);
             setFormData({ title: '', description: '', videoUrl: '', pdfUrl: '', isPublished: true });
             showSnackbar('Eğitim başarıyla eklendi.', 'success');
@@ -110,11 +113,13 @@ const Educations = () => {
 
     const handleTogglePublish = async (eduId, currentStatus) => {
         try {
-            const eduRef = doc(db, 'educations', eduId);
-            await updateDoc(eduRef, {
-                isPublished: !currentStatus
-            });
-            setEducations(prev => prev.map(e => e.id === eduId ? { ...e, isPublished: !currentStatus } : e));
+            const { error } = await supabase
+                .from('educations')
+                .update({ is_published: !currentStatus })
+                .eq('id', eduId);
+            if (error) throw error;
+
+            setEducations(prev => prev.map(e => e.id === eduId ? { ...e, is_published: !currentStatus } : e));
             showSnackbar('Yayın durumu güncellendi.', 'success');
         } catch (error) {
             console.error("Error toggling publish:", error);
@@ -126,7 +131,12 @@ const Educations = () => {
         if (!window.confirm('Bu eğitimi silmek istediğinize emin misiniz?')) return;
 
         try {
-            await deleteDoc(doc(db, 'educations', eduId));
+            const { error } = await supabase
+                .from('educations')
+                .delete()
+                .eq('id', eduId);
+            if (error) throw error;
+
             setEducations(prev => prev.filter(e => e.id !== eduId));
             showSnackbar('Eğitim silindi.', 'info');
         } catch (error) {
@@ -195,18 +205,18 @@ const Educations = () => {
                                             <FormControlLabel
                                                 control={
                                                     <Switch
-                                                        checked={!!edu.isPublished}
-                                                        onChange={() => handleTogglePublish(edu.id, !!edu.isPublished)}
+                                                        checked={!!edu.is_published}
+                                                        onChange={() => handleTogglePublish(edu.id, !!edu.is_published)}
                                                         color="success"
                                                         size="small"
                                                     />
                                                 }
-                                                label={edu.isPublished ? "Yayında" : "Taslak"}
+                                                label={edu.is_published ? "Yayında" : "Taslak"}
                                                 sx={{ '& .MuiTypography-root': { fontSize: '0.8rem', fontWeight: 600 } }}
                                             />
                                         </TableCell>
                                         <TableCell color="textSecondary">
-                                            {edu.createdAt ? formatDate(edu.createdAt) : '—'}
+                                            {edu.created_at ? formatDate(Number(edu.created_at)) : '—'}
                                         </TableCell>
                                         <TableCell align="right">
                                             <IconButton onClick={() => handleDelete(edu.id)} color="error">

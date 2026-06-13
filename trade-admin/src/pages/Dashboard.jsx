@@ -9,8 +9,7 @@ import {
     TrendingUp,
     Notifications
 } from '@mui/icons-material';
-import { collection, query, where, getCountFromServer } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 
 const StatCard = ({ title, value, icon, color, loading }) => (
     <Card sx={{ height: '100%', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
@@ -58,22 +57,26 @@ const Dashboard = () => {
         const fetchStats = async () => {
             setLoading(true);
             try {
-                const statsPromises = [
-                    getCountFromServer(collection(db, 'firms')),
-                    getCountFromServer(query(collection(db, 'users'), where('status', '==', 'pending'))),
-                    getCountFromServer(collection(db, 'b2b_matches')),
-                    getCountFromServer(query(collection(db, 'marketplace_connections'), where('status', '==', 'connected'))),
-                    getCountFromServer(query(collection(db, 'educations'), where('isPublished', '==', true)))
-                ];
-
-                const snapshots = await Promise.all(statsPromises);
+                const [
+                    { count: firmsCount },
+                    { count: pendingCount },
+                    { count: matchesCount },
+                    { count: marketplacesCount },
+                    { count: educationsCount }
+                ] = await Promise.all([
+                    supabase.from('companies').select('*', { count: 'exact', head: true }),
+                    supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'GUEST'), // Guest role in Android app represents newly registered users waiting for approval
+                    supabase.from('b2b_matches').select('*', { count: 'exact', head: true }),
+                    supabase.from('marketplace_connections').select('*', { count: 'exact', head: true }).eq('status', 'connected'),
+                    supabase.from('educations').select('*', { count: 'exact', head: true }).eq('is_published', true)
+                ]);
 
                 setStats({
-                    firms: snapshots[0].data().count,
-                    pendingUsers: snapshots[1].data().count,
-                    activeMatches: snapshots[2].data().count,
-                    activeMarketplaces: snapshots[3].data().count,
-                    publishedTrainings: snapshots[4].data().count
+                    firms: firmsCount || 0,
+                    pendingUsers: pendingCount || 0,
+                    activeMatches: matchesCount || 0,
+                    activeMarketplaces: marketplacesCount || 0,
+                    publishedTrainings: educationsCount || 0
                 });
             } catch (error) {
                 console.error("Error fetching dashboard stats:", error);

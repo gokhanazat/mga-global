@@ -22,16 +22,7 @@ import {
     Cancel as RejectIcon,
     Refresh as RefreshIcon
 } from '@mui/icons-material';
-import {
-    collection,
-    query,
-    where,
-    getDocs,
-    updateDoc,
-    doc,
-    orderBy
-} from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 import { formatDate } from '../utils/helpers';
 
 const Users = () => {
@@ -43,17 +34,24 @@ const Users = () => {
     const fetchPendingUsers = async () => {
         setLoading(true);
         try {
-            const q = query(
-                collection(db, 'users'),
-                where('status', '==', 'pending')
-            );
-            const querySnapshot = await getDocs(q);
-            const userList = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
+            // Fetch profiles with role GUEST (pending approval)
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('role', 'GUEST');
+
+            if (error) throw error;
+
+            const userList = (data || []).map(p => ({
+                id: p.id,
+                email: p.email,
+                createdAt: Number(p.created_at) || Date.now(),
+                role: p.role,
+                status: 'pending'
             }));
-            // Sortering by createdAt if exists, otherwise by email
-            userList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+            // Sort by createdAt descending
+            userList.sort((a, b) => b.createdAt - a.createdAt);
             setUsers(userList);
         } catch (error) {
             console.error("Error fetching pending users:", error);
@@ -70,19 +68,24 @@ const Users = () => {
     const handleAction = async (userId, action) => {
         setActionLoading(userId);
         try {
-            const userRef = doc(db, 'users', userId);
             if (action === 'approve') {
-                await updateDoc(userRef, {
-                    status: 'approved',
-                    role: 'company',
-                    approvedAt: Date.now()
-                });
-                showSnackbar('Kullanıcı başarıyla onaylandı ve "Şirket" rolü atandı.', 'success');
+                const { error } = await supabase
+                    .from('profiles')
+                    .update({
+                        role: 'MEMBER'
+                    })
+                    .eq('id', userId);
+
+                if (error) throw error;
+                showSnackbar('Kullanıcı başarıyla onaylandı ve "MEMBER" rolü atandı.', 'success');
             } else {
-                await updateDoc(userRef, {
-                    status: 'rejected',
-                    rejectedAt: Date.now()
-                });
+                // Delete user profile on reject
+                const { error } = await supabase
+                    .from('profiles')
+                    .delete()
+                    .eq('id', userId);
+
+                if (error) throw error;
                 showSnackbar('Kullanıcı başvurusu reddedildi.', 'warning');
             }
             // Remove from local state
@@ -111,7 +114,7 @@ const Users = () => {
                         Kullanıcı Onayları
                     </Typography>
                     <Typography variant="body1" color="textSecondary">
-                        Onay bekleyen şirket hesaplarını yönetin
+                        Onay bekleyen (GUEST) üye hesaplarını yönetin
                     </Typography>
                 </Box>
                 <Tooltip title="Listeyi Yenile">
@@ -131,8 +134,8 @@ const Users = () => {
                         <TableHead sx={{ backgroundColor: '#F8F9FA' }}>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>E-posta</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Firma ID</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Kayıt Tarihi</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Mevcut Rol</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Durum</TableCell>
                                 <TableCell align="right" sx={{ fontWeight: 'bold' }}>İşlemler</TableCell>
                             </TableRow>
@@ -147,17 +150,17 @@ const Users = () => {
                             ) : (
                                 users.map((user) => (
                                     <TableRow key={user.id} hover>
-                                        <TableCell fontWeight="500">{user.email}</TableCell>
+                                        <TableCell sx={{ fontWeight: 500 }}>{user.email}</TableCell>
+                                        <TableCell color="textSecondary">
+                                            {user.createdAt ? formatDate(user.createdAt) : '—'}
+                                        </TableCell>
                                         <TableCell>
                                             <Chip
-                                                label={user.firmId || 'Atanmamış'}
+                                                label={user.role}
                                                 size="small"
                                                 variant="outlined"
                                                 sx={{ borderRadius: 1 }}
                                             />
-                                        </TableCell>
-                                        <TableCell color="textSecondary">
-                                            {user.createdAt ? formatDate(user.createdAt) : '—'}
                                         </TableCell>
                                         <TableCell>
                                             <Chip

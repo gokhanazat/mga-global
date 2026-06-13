@@ -12,10 +12,7 @@ import {
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -31,41 +28,45 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            // 1. Authenticate with Firebase Auth
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            // 1. Authenticate with Supabase Auth
+            const { data, error: authError } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+            if (authError) throw authError;
 
-            // 2. Check user role in Firestore
-            const userDocRef = doc(db, 'users', user.uid);
-            const userDoc = await getDoc(userDocRef);
+            const user = data.user;
 
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                // Match "ADMIN" or "admin" (case-insensitive approach)
-                const userRole = (userData.role || '').toUpperCase();
+            // 2. Check user role in profiles table
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', user.id)
+                .single();
+
+            if (profileError) {
+                await supabase.auth.signOut();
+                throw new Error("Kullanıcı rolü doğrulanamadı.");
+            }
+
+            if (profile) {
+                const userRole = (profile.role || '').toUpperCase();
 
                 if (userRole === 'ADMIN') {
                     // Success: User is an admin
                     navigate('/');
                 } else {
                     // Failure: Logged in but not an admin
-                    await auth.signOut();
+                    await supabase.auth.signOut();
                     setError('Access Denied: You do not have administrator privileges.');
                 }
             } else {
-                // Failure: User document not found in /users collection
-                await auth.signOut();
+                await supabase.auth.signOut();
                 setError('User profile not found. Please contact support.');
             }
         } catch (err) {
             console.error('Login error:', err);
-            let message = 'Login failed. Please check your credentials.';
-            if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-                message = 'Invalid email or password.';
-            } else if (err.code === 'auth/too-many-requests') {
-                message = 'Too many failed attempts. Please try again later.';
-            }
-            setError(message);
+            setError(err.message || 'Login failed. Please check your credentials.');
         } finally {
             setIsLoading(false);
         }
@@ -82,7 +83,7 @@ const Login = () => {
             <Container maxWidth="xs">
                 <Paper elevation={0} sx={{ p: 5, borderRadius: 4, textAlign: 'center' }}>
                     <Typography variant="h4" fontWeight="bold" color="primary" sx={{ mb: 1 }}>
-                        TradeBridge
+                        MGA GLOBAL
                     </Typography>
                     <Typography variant="body2" color="textSecondary" sx={{ mb: 4 }}>
                         Admin Control Center
@@ -145,7 +146,7 @@ const Login = () => {
                     </form>
 
                     <Typography variant="body2" color="textSecondary" sx={{ mt: 4 }}>
-                        &copy; 2026 TradeBridge Enterprise
+                        &copy; 2026 MGA GLOBAL Enterprise
                     </Typography>
                 </Paper>
             </Container>

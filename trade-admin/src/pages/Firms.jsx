@@ -23,8 +23,7 @@ import {
     CircularProgress
 } from '@mui/material';
 import { Edit as EditIcon, Refresh as RefreshIcon } from '@mui/icons-material';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 
 const Firms = () => {
     const [firms, setFirms] = useState([]);
@@ -36,12 +35,12 @@ const Firms = () => {
     const fetchFirms = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, 'firms'));
-            const firmList = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setFirms(firmList);
+            const { data, error } = await supabase
+                .from('companies')
+                .select('*')
+                .order('name', { ascending: true });
+            if (error) throw error;
+            setFirms(data || []);
         } catch (error) {
             console.error("Error fetching firms:", error);
             showSnackbar('Firmalar yüklenirken bir hata oluştu.', 'error');
@@ -56,11 +55,13 @@ const Firms = () => {
 
     const handleToggleApproved = async (firmId, currentStatus) => {
         try {
-            const firmRef = doc(db, 'firms', firmId);
-            await updateDoc(firmRef, {
-                isApproved: !currentStatus
-            });
-            setFirms(prev => prev.map(f => f.id === firmId ? { ...f, isApproved: !currentStatus } : f));
+            const { error } = await supabase
+                .from('companies')
+                .update({ is_approved: !currentStatus })
+                .eq('id', firmId);
+            if (error) throw error;
+
+            setFirms(prev => prev.map(f => f.id === firmId ? { ...f, is_approved: !currentStatus } : f));
             showSnackbar('Firma onay durumu güncellendi.', 'success');
         } catch (error) {
             console.error("Error toggling approval:", error);
@@ -76,11 +77,15 @@ const Firms = () => {
     const handleSaveEdit = async () => {
         if (!currentFirm) return;
         try {
-            const firmRef = doc(db, 'firms', currentFirm.id);
-            await updateDoc(firmRef, {
-                exportCapacity: currentFirm.exportCapacity || '',
-                targetMarkets: currentFirm.targetMarkets || ''
-            });
+            const { error } = await supabase
+                .from('companies')
+                .update({
+                    export_capacity: currentFirm.export_capacity || '',
+                    target_markets: currentFirm.target_markets || ''
+                })
+                .eq('id', currentFirm.id);
+            if (error) throw error;
+
             setFirms(prev => prev.map(f => f.id === currentFirm.id ? { ...currentFirm } : f));
             setEditDialogOpen(false);
             showSnackbar('Firma bilgileri başarıyla güncellendi.', 'success');
@@ -143,8 +148,8 @@ const Firms = () => {
                                         </TableCell>
                                         <TableCell>
                                             <Switch
-                                                checked={!!firm.isApproved}
-                                                onChange={() => handleToggleApproved(firm.id, !!firm.isApproved)}
+                                                checked={!!firm.is_approved}
+                                                onChange={() => handleToggleApproved(firm.id, !!firm.is_approved)}
                                                 color="success"
                                             />
                                         </TableCell>
@@ -174,15 +179,15 @@ const Firms = () => {
                         />
                         <TextField
                             label="İhracat Kapasitesi"
-                            value={currentFirm?.exportCapacity || ''}
-                            onChange={(e) => setCurrentFirm(prev => ({ ...prev, exportCapacity: e.target.value }))}
+                            value={currentFirm?.export_capacity || ''}
+                            onChange={(e) => setCurrentFirm(prev => ({ ...prev, export_capacity: e.target.value }))}
                             placeholder="Örn: 1.000.000 $"
                             fullWidth
                         />
                         <TextField
                             label="Hedef Pazarlar"
-                            value={currentFirm?.targetMarkets || ''}
-                            onChange={(e) => setCurrentFirm(prev => ({ ...prev, targetMarkets: e.target.value }))}
+                            value={currentFirm?.target_markets || ''}
+                            onChange={(e) => setCurrentFirm(prev => ({ ...prev, target_markets: e.target.value }))}
                             placeholder="Örn: Avrupa, Ortadoğu"
                             fullWidth
                             multiline

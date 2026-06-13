@@ -18,8 +18,7 @@ import {
     IconButton
 } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 
 const B2BMatches = () => {
     const [matches, setMatches] = useState([]);
@@ -29,12 +28,12 @@ const B2BMatches = () => {
     const fetchMatches = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, 'b2b_matches'));
-            const matchList = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setMatches(matchList);
+            const { data, error } = await supabase
+                .from('b2b_matches')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            setMatches(data || []);
         } catch (error) {
             console.error("Error fetching B2B matches:", error);
             showSnackbar('Eşleşmeler yüklenirken bir hata oluştu.', 'error');
@@ -49,10 +48,12 @@ const B2BMatches = () => {
 
     const handleStatusChange = async (matchId, newStatus) => {
         try {
-            const matchRef = doc(db, 'b2b_matches', matchId);
-            await updateDoc(matchRef, {
-                status: newStatus
-            });
+            const { error } = await supabase
+                .from('b2b_matches')
+                .update({ status: newStatus })
+                .eq('id', matchId);
+            if (error) throw error;
+
             setMatches(prev => prev.map(m => m.id === matchId ? { ...m, status: newStatus } : m));
             showSnackbar(`Eşleşme durumu "${newStatus}" olarak güncellendi.`, 'success');
         } catch (error) {
@@ -116,12 +117,12 @@ const B2BMatches = () => {
                             ) : (
                                 matches.map((match) => (
                                     <TableRow key={match.id} hover>
-                                        <TableCell sx={{ fontWeight: 500 }}>{match.companyAName || match.firmAId || 'Firma A'}</TableCell>
-                                        <TableCell sx={{ fontWeight: 500 }}>{match.companyBName || match.firmBId || 'Firma B'}</TableCell>
+                                        <TableCell sx={{ fontWeight: 500 }}>{match.company_a_name || match.firm_a_id || 'Firma A'}</TableCell>
+                                        <TableCell sx={{ fontWeight: 500 }}>{match.company_b_name || match.firm_b_id || 'Firma B'}</TableCell>
                                         <TableCell>
                                             <Chip
-                                                label={`%${(match.matchScore || 0).toFixed(0)}`}
-                                                color={match.matchScore > 80 ? 'success' : 'primary'}
+                                                label={`%${(Number(match.match_score) || 0).toFixed(0)}`}
+                                                color={match.match_score > 80 ? 'success' : 'primary'}
                                                 variant="outlined"
                                                 size="small"
                                                 sx={{ fontWeight: 'bold' }}

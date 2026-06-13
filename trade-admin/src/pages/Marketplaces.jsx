@@ -21,8 +21,7 @@ import {
     Search as SearchIcon,
     FilterList as FilterIcon
 } from '@mui/icons-material';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { supabase } from '../supabaseClient';
 import { formatDate } from '../utils/helpers';
 
 const Marketplaces = () => {
@@ -37,14 +36,13 @@ const Marketplaces = () => {
     const fetchConnections = async () => {
         setLoading(true);
         try {
-            const q = query(collection(db, 'marketplace_connections'), orderBy('lastSync', 'desc'));
-            const querySnapshot = await getDocs(q);
-            const connectionList = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setConnections(connectionList);
-            setFilteredConnections(connectionList);
+            const { data, error } = await supabase
+                .from('marketplace_connections')
+                .select('*')
+                .order('last_sync', { ascending: false });
+            if (error) throw error;
+            setConnections(data || []);
+            setFilteredConnections(data || []);
         } catch (error) {
             console.error("Error fetching marketplace connections:", error);
         } finally {
@@ -65,7 +63,7 @@ const Marketplaces = () => {
 
         if (searchTerm) {
             result = result.filter(c =>
-                c.firmId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                c.firm_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 c.platform?.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
@@ -163,7 +161,7 @@ const Marketplaces = () => {
                                 filteredConnections.map((conn) => (
                                     <TableRow key={conn.id} hover>
                                         <TableCell sx={{ fontWeight: 500, fontFamily: 'monospace' }}>
-                                            {conn.firmId}
+                                            {conn.firm_id}
                                         </TableCell>
                                         <TableCell>
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -181,7 +179,7 @@ const Marketplaces = () => {
                                             />
                                         </TableCell>
                                         <TableCell color="textSecondary">
-                                            {conn.lastSync ? formatDate(conn.lastSync) : 'Senkronizasyon yok'}
+                                            {conn.last_sync ? formatDate(Number(conn.last_sync)) : 'Senkronizasyon yok'}
                                         </TableCell>
                                         <TableCell align="right">
                                             <Chip label="Sadece Oku" size="small" variant="outlined" disabled />
