@@ -1,6 +1,6 @@
-<resources>
+﻿<resources>
     <!-- App & Navigation -->
-    <string name="app_name">ITSO GLOBAL</string>
+    <string name="app_name">MGA GLOBAL</string>
     <string name="nav_home">Home</string>
     <string name="nav_showroom">Digital Showroom</string>
     <string name="nav_b2b">B2B Meeting</string>
@@ -53,13 +53,13 @@
     <string name="active_integrations">ACTIVE INTEGRATIONS</string>
     <string name="sync_status_connected">Currently connected and syncing</string>
     <string name="available_platforms">AVAILABLE PLATFORMS</string>
-    <string name="sync_success">✓ %s products synced successfully!</string>
+    <string name="sync_success">âœ“ %s products synced successfully!</string>
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
     <string name="last_sync">LAST SYNC</string>
     <string name="no_sync_yet">No sync yet</string>
     <string name="connect">Connect</string>
-    <string name="syncing">Syncing…</string>
+    <string name="syncing">Syncingâ€¦</string>
     <string name="sync_now">Sync Now</string>
     <string name="disconnect_title">Disconnect %s?</string>
     <string name="disconnect_desc">The API key will be cleared and synchronization will stop. You can reconnect at any time.</string>
@@ -73,13 +73,13 @@
     <string name="api_config">API Configuration</string>
     <string name="api_config_desc">Connect your %s merchant account by providing the API credentials below.</string>
     <string name="api_key_label">API Key / Access Token</string>
-    <string name="api_key_placeholder">Paste your key here…</string>
+    <string name="api_key_placeholder">Paste your key hereâ€¦</string>
     <string name="hide">Hide</string>
     <string name="show">Show</string>
-    <string name="security_note">🔒 Your API key is encrypted and stored securely in Firestore. It is never shared or transmitted to third parties.</string>
-    <string name="connect_success">✓ %s connected successfully!</string>
+    <string name="security_note">ğŸ”’ Your API key is encrypted and stored securely in Firestore. It is never shared or transmitted to third parties.</string>
+    <string name="connect_success">âœ“ %s connected successfully!</string>
     <string name="connect_failed">Connection failed. Please verify your API key.</string>
-    <string name="saving">Saving…</string>
+    <string name="saving">Savingâ€¦</string>
     <string name="save_connect">Save &amp; Connect</string>
     <string name="cancel_return">Cancel and Return</string>
 
@@ -129,10 +129,10 @@
     <string name="b2b_match_center">B2B Match Center</string>
     <string name="action_add_internal_note">Add Internal Note</string>
     <string name="about_education">About Education</string>
-    <string name="marketplace_external_disclaimer">Transactions occur on external platforms. ITSO GLOBAL is not responsible for these transactions.</string>
+    <string name="marketplace_external_disclaimer">Transactions occur on external platforms. MGA GLOBAL is not responsible for these transactions.</string>
     <string name="marketplace_price_notice">Prices and availability may change on external platforms.</string>
     <string name="footer_title">Corporate Information</string>
-    <string name="footer_info">© 2024 ITSO GLOBAL Platform. All rights reserved.\nDeveloped by MGA Creative Works.\nContact: info@itso.org.tr</string>
+    <string name="footer_info">Â© 2024 MGA GLOBAL Platform. All rights reserved.\nDeveloped by MGA Creative Works.\nContact: info@itso.org.tr</string>
     <string name="nav_b2b_desc">Expand your global network and find new business partners</string>
     <string name="economic_news_desc">Current economic and trade news from the world</string>
     <string name="product_description_label">Product Description</string>
@@ -144,3 +144,4 @@
     <string name="nav_education_desc">Manage platform training and your certificates.</string>
     <string name="welcome_member">Member</string>
 </resources>
+

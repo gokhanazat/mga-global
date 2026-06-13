@@ -57,6 +57,10 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+            implementation(libs.supabase.postgrest)
+            implementation(libs.supabase.auth)
+            implementation(libs.supabase.storage)
+            implementation(libs.supabase.realtime)
         }
         val webMain by creating {
             dependsOn(commonMain.get())
@@ -77,15 +81,15 @@ kotlin {
 }
 
 android {
-    namespace = "com.mgacreative.globaltrade"
+    namespace = "com.mgacreative.mgaglobal"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.mgacreative.globaltrade"
+        applicationId = "com.mgacreative.mgaglobal"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.2"
     }
     packaging {
         resources {

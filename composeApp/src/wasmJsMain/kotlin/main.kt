@@ -1,8 +1,8 @@
-package com.mgacreative.globaltrade
+﻿package com.mgacreative.mgaglobal
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
-import com.mgacreative.globaltrade.App
+import com.mgacreative.mgaglobal.App
 import kotlinx.browser.window
 import kotlinx.browser.localStorage
 
@@ -13,7 +13,7 @@ external fun overrideNavigatorLanguage(lang: String)
 fun main() {
     val initialLanguage = window.localStorage.getItem("app_language") ?: "tr"
     
-    // Tarayıcı dilini uygulama diliyle senkron et (Skiko için kritik)
+    // TarayÄ±cÄ± dilini uygulama diliyle senkron et (Skiko iÃ§in kritik)
     overrideNavigatorLanguage(initialLanguage)
     
     println("!!! VERSION 03-26-16-30 !!!")
@@ -26,3 +26,4 @@ fun main() {
         App(initialLanguage = initialLanguage)
     }
 }
+

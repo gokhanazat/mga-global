@@ -1,6 +1,6 @@
-<resources>
+﻿<resources>
     <!-- App & Navigation -->
-    <string name="app_name">ITSO GLOBAL</string>
+    <string name="app_name">MGA GLOBAL</string>
     <string name="nav_home">Startseite</string>
     <string name="nav_showroom">Digitaler Showroom</string>
     <string name="nav_b2b">B2B Match</string>
@@ -24,9 +24,9 @@
     <string name="new_matches">Neue Matches</string>
     <string name="meetings">Meetings</string>
     <string name="integrations">Integrationen</string>
-    <string name="open_button">Öffnen</string>
-    <string name="showroom_desc">Exportprodukte verwalten und globalen Käufern präsentieren</string>
-    <string name="b2b_center_desc">KI-gestützte globale Geschäftsmatches anzeigen und verwalten</string>
+    <string name="open_button">Ã–ffnen</string>
+    <string name="showroom_desc">Exportprodukte verwalten und globalen KÃ¤ufern prÃ¤sentieren</string>
+    <string name="b2b_center_desc">KI-gestÃ¼tzte globale GeschÃ¤ftsmatches anzeigen und verwalten</string>
     <string name="appointments_desc">Beratungstermine und Exportverhandlungen verwalten</string>
     <string name="marketplace_desc">Externe Marktplatzverbindungen verwalten und synchronisieren</string>
 
@@ -42,7 +42,7 @@
     <string name="country_label">Land</string>
     <string name="sector_label">Branche</string>
     <string name="match_score_label">Match-Score</string>
-    <string name="export_capacity">Exportkapazität: %s</string>
+    <string name="export_capacity">ExportkapazitÃ¤t: %s</string>
     <string name="match_badge">MATCH</string>
     <string name="view_profile">Profil anzeigen</string>
     <string name="schedule_meeting">Termin vereinbaren</string>
@@ -52,36 +52,36 @@
     <string name="marketplace_subtitle">Externe Plattformverbindungen verwalten</string>
     <string name="active_integrations">AKTIVE INTEGRATIONEN</string>
     <string name="sync_status_connected">Derzeit verbunden und synchronisierend</string>
-    <string name="available_platforms">VERFÜGBARE PLATTFORMEN</string>
-    <string name="sync_success">✓ %s Produkte erfolgreich synchronisiert!</string>
+    <string name="available_platforms">VERFÃœGBARE PLATTFORMEN</string>
+    <string name="sync_success">âœ“ %s Produkte erfolgreich synchronisiert!</string>
     <string name="active">Aktiv</string>
     <string name="inactive">Inaktiv</string>
     <string name="last_sync">LETZTE SYNCHRONISIERUNG</string>
     <string name="no_sync_yet">Noch keine Synchronisierung</string>
     <string name="connect">Verbinden</string>
-    <string name="syncing">Synchronisierung…</string>
+    <string name="syncing">Synchronisierungâ€¦</string>
     <string name="sync_now">Jetzt synchronisieren</string>
     <string name="disconnect_title">%s trennen?</string>
-    <string name="disconnect_desc">Der API-Schlüssel wird gelöscht und die Synchronisierung gestoppt. Sie können sich jederzeit wieder verbinden.</string>
+    <string name="disconnect_desc">Der API-SchlÃ¼ssel wird gelÃ¶scht und die Synchronisierung gestoppt. Sie kÃ¶nnen sich jederzeit wieder verbinden.</string>
     <string name="disconnect_confirm">Trennen</string>
     <string name="cancel">Abbrechen</string>
     <string name="disconnected_msg">%s getrennt.</string>
 
     <!-- Marketplace Connect -->
     <string name="connect_platform">Plattform verbinden</string>
-    <string name="official_integration">OFFIZIELLE VERKÄUFER-INTEGRATION</string>
+    <string name="official_integration">OFFIZIELLE VERKÃ„UFER-INTEGRATION</string>
     <string name="api_config">API-Konfiguration</string>
-    <string name="api_config_desc">Verbinden Sie Ihr %s Verkäuferkonto, indem Sie die folgenden API-Anmeldedaten angeben.</string>
-    <string name="api_key_label">API-Schlüssel / Zugriffstoken</string>
-    <string name="api_key_placeholder">Schlüssel hier einfügen…</string>
+    <string name="api_config_desc">Verbinden Sie Ihr %s VerkÃ¤uferkonto, indem Sie die folgenden API-Anmeldedaten angeben.</string>
+    <string name="api_key_label">API-SchlÃ¼ssel / Zugriffstoken</string>
+    <string name="api_key_placeholder">SchlÃ¼ssel hier einfÃ¼genâ€¦</string>
     <string name="hide">Ausblenden</string>
     <string name="show">Anzeigen</string>
-    <string name="security_note">🔒 Ihr API-Schlüssel ist verschlüsselt und wird sicher in Firestore gespeichert. Er wird niemals an Dritte weitergegeben oder übertragen.</string>
-    <string name="connect_success">✓ %s erfolgreich verbunden!</string>
-    <string name="connect_failed">Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihren API-Schlüssel.</string>
-    <string name="saving">Speichern…</string>
+    <string name="security_note">ğŸ”’ Ihr API-SchlÃ¼ssel ist verschlÃ¼sselt und wird sicher in Firestore gespeichert. Er wird niemals an Dritte weitergegeben oder Ã¼bertragen.</string>
+    <string name="connect_success">âœ“ %s erfolgreich verbunden!</string>
+    <string name="connect_failed">Verbindung fehlgeschlagen. Bitte Ã¼berprÃ¼fen Sie Ihren API-SchlÃ¼ssel.</string>
+    <string name="saving">Speichernâ€¦</string>
     <string name="save_connect">Speichern &amp; Verbinden</string>
-    <string name="cancel_return">Abbrechen und Zurück</string>
+    <string name="cancel_return">Abbrechen und ZurÃ¼ck</string>
 
     <!-- Profile -->
     <string name="profile_title">Profil</string>
@@ -100,7 +100,7 @@
     <string name="day_label">Tag</string>
 
     <!-- Generic -->
-    <string name="back">Zurück</string>
+    <string name="back">ZurÃ¼ck</string>
     <string name="product_image">Produktbild</string>
     <string name="premium_badge">PREMIUM</string>
     <string name="view_details">Details anzeigen</string>
@@ -110,19 +110,19 @@
     <string name="language_updated_success">Sprache erfolgreich aktualisiert</string>
     <string name="welcome">Willkommen</string>
     <string name="search_hint">Produkte oder Berater suchen...</string>
-    <string name="platform_announcements">Plattform-Ankündigungen</string>
-    <string name="no_active_announcements">Momentan keine aktiven Ankündigungen.</string>
+    <string name="platform_announcements">Plattform-AnkÃ¼ndigungen</string>
+    <string name="no_active_announcements">Momentan keine aktiven AnkÃ¼ndigungen.</string>
     
     <string name="action_send_b2b_request">B2B-Anfrage senden</string>
     <string name="action_view_company_profile">Firmenprofil anzeigen</string>
     <string name="no_certificates_yet">Sie haben noch keine Zertifikate.</string>
-    <string name="action_open_pdf_source">PDF-Quelle öffnen</string>
+    <string name="action_open_pdf_source">PDF-Quelle Ã¶ffnen</string>
     <string name="action_view_certificate">Zertifikat anzeigen</string>
     <string name="action_generate_certificate_pdf">Zertifikat erstellen (PDF)</string>
     <string name="status_completed">Abgeschlossen</string>
     <string name="b2b_match_center">B2B-Match-Center</string>
-    <string name="action_add_internal_note">Interne Notiz hinzufügen</string>
-    <string name="about_education">Über Bildung</string>
+    <string name="action_add_internal_note">Interne Notiz hinzufÃ¼gen</string>
+    <string name="about_education">Ãœber Bildung</string>
     <string name="new_label_title">Neu</string>
     <string name="economic_news">Wirtschaftsnachrichten</string>
     <string name="empty_news">Leer</string>
@@ -130,11 +130,12 @@
     <string name="search_sector">Branche</string>
     <string name="search_company">Firma</string>
     <string name="footer_title">Unternehmensinformationen</string>
-    <string name="footer_info">© 2024 Global Trade Plattform. Alle Rechte vorbehalten.\nEntwickelt von MGA Creative Works.\nKontakt: info@globaltrade.com</string>
+    <string name="footer_info">Â© 2024 Global Trade Plattform. Alle Rechte vorbehalten.\nEntwickelt von MGA Creative Works.\nKontakt: info@globaltrade.com</string>
     <string name="nav_b2b_desc">Erweitern Sie Ihr globales Netzwerk und finden Sie neue Partner</string>
     <string name="economic_news_desc">Aktuelle Wirtschafts- und Handelsnachrichten aus aller Welt</string>
     <string name="product_description_label">Produktbeschreibung</string>
-    <string name="no_description">Keine Beschreibung verfügbar.</string>
-    <string name="close_button">Schließen</string>
+    <string name="no_description">Keine Beschreibung verfÃ¼gbar.</string>
+    <string name="close_button">SchlieÃŸen</string>
     <string name="login_text">Anmelden</string>
 </resources>
+

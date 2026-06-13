@@ -1,4 +1,4 @@
-rootProject.name = "ITSOHUB"
+rootProject.name = "MGAGLOBAL"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

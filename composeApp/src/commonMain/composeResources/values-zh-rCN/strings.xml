@@ -1,138 +1,139 @@
-<resources>
+﻿<resources>
     <!-- App & Navigation -->
-    <string name="app_name">ITSO GLOBAL</string>
-    <string name="nav_home">首页</string>
-    <string name="nav_showroom">数字展厅</string>
-    <string name="nav_b2b">B2B 撮合</string>
-    <string name="nav_appointments">咨询</string>
-    <string name="nav_marketplace">市场</string>
-    <string name="nav_education">培训</string>
-    <string name="nav_profile">个人资料</string>
-    <string name="nav_certificates">我的证书</string>
-    <string name="nav_product_detail">产品详情</string>
-    <string name="nav_education_detail">培训详情</string>
-    <string name="nav_appointment_detail">预约详情</string>
-    <string name="nav_company_profile">公司资料</string>
-    <string name="nav_marketplace_connect">连接市场</string>
+    <string name="app_name">MGA GLOBAL</string>
+    <string name="nav_home">é¦–é¡µ</string>
+    <string name="nav_showroom">æ•°å­—å±•å…</string>
+    <string name="nav_b2b">B2B æ’®åˆ</string>
+    <string name="nav_appointments">å’¨è¯¢</string>
+    <string name="nav_marketplace">å¸‚åœº</string>
+    <string name="nav_education">åŸ¹è®­</string>
+    <string name="nav_profile">ä¸ªäººèµ„æ–™</string>
+    <string name="nav_certificates">æˆ‘çš„è¯ä¹¦</string>
+    <string name="nav_product_detail">äº§å“è¯¦æƒ…</string>
+    <string name="nav_education_detail">åŸ¹è®­è¯¦æƒ…</string>
+    <string name="nav_appointment_detail">é¢„çº¦è¯¦æƒ…</string>
+    <string name="nav_company_profile">å…¬å¸èµ„æ–™</string>
+    <string name="nav_marketplace_connect">è¿æ¥å¸‚åœº</string>
 
     <!-- Home Dashboard -->
-    <string name="global_trade_platform">全球贸易平台</string>
-    <string name="platform_modules">平台模块</string>
-    <string name="welcome_message">欢迎，%s</string>
-    <string name="export_management_dashboard">出口管理仪表盘</string>
-    <string name="active_products">活跃产品</string>
-    <string name="new_matches">新撮合</string>
-    <string name="meetings">会议</string>
-    <string name="integrations">集成</string>
-    <string name="open_button">打开</string>
-    <string name="showroom_desc">管理并向全球买家展示出口产品</string>
-    <string name="b2b_center_desc">查看并管理 AI 驱动的全球业务撮合</string>
-    <string name="appointments_desc">管理咨询会议和出口谈判</string>
-    <string name="marketplace_desc">管理并同步外部市场连接</string>
+    <string name="global_trade_platform">å…¨çƒè´¸æ˜“å¹³å°</string>
+    <string name="platform_modules">å¹³å°æ¨¡å—</string>
+    <string name="welcome_message">æ¬¢è¿ï¼Œ%s</string>
+    <string name="export_management_dashboard">å‡ºå£ç®¡ç†ä»ªè¡¨ç›˜</string>
+    <string name="active_products">æ´»è·ƒäº§å“</string>
+    <string name="new_matches">æ–°æ’®åˆ</string>
+    <string name="meetings">ä¼šè®®</string>
+    <string name="integrations">é›†æˆ</string>
+    <string name="open_button">æ‰“å¼€</string>
+    <string name="showroom_desc">ç®¡ç†å¹¶å‘å…¨çƒä¹°å®¶å±•ç¤ºå‡ºå£äº§å“</string>
+    <string name="b2b_center_desc">æŸ¥çœ‹å¹¶ç®¡ç† AI é©±åŠ¨çš„å…¨çƒä¸šåŠ¡æ’®åˆ</string>
+    <string name="appointments_desc">ç®¡ç†å’¨è¯¢ä¼šè®®å’Œå‡ºå£è°ˆåˆ¤</string>
+    <string name="marketplace_desc">ç®¡ç†å¹¶åŒæ­¥å¤–éƒ¨å¸‚åœºè¿æ¥</string>
 
     <!-- Showroom -->
-    <string name="search_placeholder">搜索产品或公司...</string>
-    <string name="filter">筛选</string>
+    <string name="search_placeholder">æœç´¢äº§å“æˆ–å…¬å¸...</string>
+    <string name="filter">ç­›é€‰</string>
 
     <!-- B2B Match -->
-    <string name="top_recommendations">热门推荐</string>
-    <string name="overall_match_score">综合匹配分</string>
-    <string name="new_label">新增</string>
-    <string name="pending_label">待定</string>
-    <string name="country_label">国家</string>
-    <string name="sector_label">行业</string>
-    <string name="match_score_label">匹配得分</string>
-    <string name="export_capacity">出口能力：%s</string>
-    <string name="match_badge">匹配</string>
-    <string name="view_profile">查看资料</string>
-    <string name="schedule_meeting">安排会议</string>
+    <string name="top_recommendations">çƒ­é—¨æ¨è</string>
+    <string name="overall_match_score">ç»¼åˆåŒ¹é…åˆ†</string>
+    <string name="new_label">æ–°å¢</string>
+    <string name="pending_label">å¾…å®š</string>
+    <string name="country_label">å›½å®¶</string>
+    <string name="sector_label">è¡Œä¸š</string>
+    <string name="match_score_label">åŒ¹é…å¾—åˆ†</string>
+    <string name="export_capacity">å‡ºå£èƒ½åŠ›ï¼š%s</string>
+    <string name="match_badge">åŒ¹é…</string>
+    <string name="view_profile">æŸ¥çœ‹èµ„æ–™</string>
+    <string name="schedule_meeting">å®‰æ’ä¼šè®®</string>
 
     <!-- Marketplace -->
-    <string name="marketplace_title">市场集成</string>
-    <string name="marketplace_subtitle">管理外部平台连接</string>
-    <string name="active_integrations">有效集成</string>
-    <string name="sync_status_connected">当前已连接并同步中</string>
-    <string name="available_platforms">可用平台</string>
-    <string name="sync_success">✓ %s 产品同步成功！</string>
-    <string name="active">有效</string>
-    <string name="inactive">未激活</string>
-    <string name="last_sync">上次同步</string>
-    <string name="no_sync_yet">尚无同步</string>
-    <string name="connect">连接</string>
-    <string name="syncing">同步中…</string>
-    <string name="sync_now">立即同步</string>
-    <string name="disconnect_title">断开 %s 连接？</string>
-    <string name="disconnect_desc">API 密钥将被清除，同步将停止。您可以随时重新连接。</string>
-    <string name="disconnect_confirm">断开连接</string>
-    <string name="cancel">取消</string>
-    <string name="disconnected_msg">%s 已断开连接。</string>
+    <string name="marketplace_title">å¸‚åœºé›†æˆ</string>
+    <string name="marketplace_subtitle">ç®¡ç†å¤–éƒ¨å¹³å°è¿æ¥</string>
+    <string name="active_integrations">æœ‰æ•ˆé›†æˆ</string>
+    <string name="sync_status_connected">å½“å‰å·²è¿æ¥å¹¶åŒæ­¥ä¸­</string>
+    <string name="available_platforms">å¯ç”¨å¹³å°</string>
+    <string name="sync_success">âœ“ %s äº§å“åŒæ­¥æˆåŠŸï¼</string>
+    <string name="active">æœ‰æ•ˆ</string>
+    <string name="inactive">æœªæ¿€æ´»</string>
+    <string name="last_sync">ä¸Šæ¬¡åŒæ­¥</string>
+    <string name="no_sync_yet">å°šæ— åŒæ­¥</string>
+    <string name="connect">è¿æ¥</string>
+    <string name="syncing">åŒæ­¥ä¸­â€¦</string>
+    <string name="sync_now">ç«‹å³åŒæ­¥</string>
+    <string name="disconnect_title">æ–­å¼€ %s è¿æ¥ï¼Ÿ</string>
+    <string name="disconnect_desc">API å¯†é’¥å°†è¢«æ¸…é™¤ï¼ŒåŒæ­¥å°†åœæ­¢ã€‚æ‚¨å¯ä»¥éšæ—¶é‡æ–°è¿æ¥ã€‚</string>
+    <string name="disconnect_confirm">æ–­å¼€è¿æ¥</string>
+    <string name="cancel">å–æ¶ˆ</string>
+    <string name="disconnected_msg">%s å·²æ–­å¼€è¿æ¥ã€‚</string>
 
     <!-- Marketplace Connect -->
-    <string name="connect_platform">连接平台</string>
-    <string name="official_integration">官方卖家集成</string>
-    <string name="api_config">API 配置</string>
-    <string name="api_config_desc">通过提供下方的 API 凭据连接您的 %s 商家账户。</string>
-    <string name="api_key_label">API 密钥 / 访问令牌</string>
-    <string name="api_key_placeholder">在此粘贴您的密钥…</string>
-    <string name="hide">隐藏</string>
-    <string name="show">显示</string>
-    <string name="security_note">🔒 您的 API 密钥已加密并安全地存储在 Firestore 中。绝不会共享或传输给第三方。</string>
-    <string name="connect_success">✓ %s 连接成功！</string>
-    <string name="connect_failed">连接失败。请验证您的 API 密钥。</string>
-    <string name="saving">保存中…</string>
-    <string name="save_connect">保存并连接</string>
-    <string name="cancel_return">取消并返回</string>
+    <string name="connect_platform">è¿æ¥å¹³å°</string>
+    <string name="official_integration">å®˜æ–¹å–å®¶é›†æˆ</string>
+    <string name="api_config">API é…ç½®</string>
+    <string name="api_config_desc">é€šè¿‡æä¾›ä¸‹æ–¹çš„ API å‡­æ®è¿æ¥æ‚¨çš„ %s å•†å®¶è´¦æˆ·ã€‚</string>
+    <string name="api_key_label">API å¯†é’¥ / è®¿é—®ä»¤ç‰Œ</string>
+    <string name="api_key_placeholder">åœ¨æ­¤ç²˜è´´æ‚¨çš„å¯†é’¥â€¦</string>
+    <string name="hide">éšè—</string>
+    <string name="show">æ˜¾ç¤º</string>
+    <string name="security_note">ğŸ”’ æ‚¨çš„ API å¯†é’¥å·²åŠ å¯†å¹¶å®‰å…¨åœ°å­˜å‚¨åœ¨ Firestore ä¸­ã€‚ç»ä¸ä¼šå…±äº«æˆ–ä¼ è¾“ç»™ç¬¬ä¸‰æ–¹ã€‚</string>
+    <string name="connect_success">âœ“ %s è¿æ¥æˆåŠŸï¼</string>
+    <string name="connect_failed">è¿æ¥å¤±è´¥ã€‚è¯·éªŒè¯æ‚¨çš„ API å¯†é’¥ã€‚</string>
+    <string name="saving">ä¿å­˜ä¸­â€¦</string>
+    <string name="save_connect">ä¿å­˜å¹¶è¿æ¥</string>
+    <string name="cancel_return">å–æ¶ˆå¹¶è¿”å›</string>
 
     <!-- Profile -->
-    <string name="profile_title">个人资料</string>
-    <string name="account_settings">账户设置</string>
-    <string name="company_info">公司信息</string>
-    <string name="notification_prefs">通知偏好</string>
-    <string name="security_password">安全和密码</string>
-    <string name="support">支持</string>
-    <string name="help_center">帮助中心</string>
-    <string name="contact_us">联系我们</string>
-    <string name="logout">退出登录</string>
-    <string name="verified_account">已认证账户</string>
+    <string name="profile_title">ä¸ªäººèµ„æ–™</string>
+    <string name="account_settings">è´¦æˆ·è®¾ç½®</string>
+    <string name="company_info">å…¬å¸ä¿¡æ¯</string>
+    <string name="notification_prefs">é€šçŸ¥åå¥½</string>
+    <string name="security_password">å®‰å…¨å’Œå¯†ç </string>
+    <string name="support">æ”¯æŒ</string>
+    <string name="help_center">å¸®åŠ©ä¸­å¿ƒ</string>
+    <string name="contact_us">è”ç³»æˆ‘ä»¬</string>
+    <string name="logout">é€€å‡ºç™»å½•</string>
+    <string name="verified_account">å·²è®¤è¯è´¦æˆ·</string>
 
     <!-- Appointments -->
-    <string name="scheduled_meetings">已排期会议</string>
-    <string name="day_label">日</string>
+    <string name="scheduled_meetings">å·²æ’æœŸä¼šè®®</string>
+    <string name="day_label">æ—¥</string>
 
     <!-- Generic -->
-    <string name="back">返回</string>
-    <string name="product_image">产品图像</string>
-    <string name="premium_badge">高级</string>
-    <string name="view_details">查看详情</string>
+    <string name="back">è¿”å›</string>
+    <string name="product_image">äº§å“å›¾åƒ</string>
+    <string name="premium_badge">é«˜çº§</string>
+    <string name="view_details">æŸ¥çœ‹è¯¦æƒ…</string>
     
     <!-- Settings -->
-    <string name="language_settings">语言设置</string>
-    <string name="language_updated_success">语言成功更新</string>
-    <string name="welcome">欢迎</string>
-    <string name="search_hint">搜索产品或顾问...</string>
-    <string name="platform_announcements">平台公告</string>
-    <string name="no_active_announcements">目前没有正在进行的公告。</string>
+    <string name="language_settings">è¯­è¨€è®¾ç½®</string>
+    <string name="language_updated_success">è¯­è¨€æˆåŠŸæ›´æ–°</string>
+    <string name="welcome">æ¬¢è¿</string>
+    <string name="search_hint">æœç´¢äº§å“æˆ–é¡¾é—®...</string>
+    <string name="platform_announcements">å¹³å°å…¬å‘Š</string>
+    <string name="no_active_announcements">ç›®å‰æ²¡æœ‰æ­£åœ¨è¿›è¡Œçš„å…¬å‘Šã€‚</string>
     
-    <string name="new_label_title">新增</string>
-    <string name="economic_news">经济新闻</string>
-    <string name="empty_news">空</string>
-    <string name="quick_search">快速搜索</string>
-    <string name="search_sector">行业</string>
-    <string name="search_company">公司</string>
-    <string name="marketplace_external_disclaimer">交易在外部平台进行。Global Trade 不对这些交易负责。</string>
-    <string name="marketplace_price_notice">价格和库存状况在外部平台可能会有变化。</string>
-    <string name="admin_meslek_gruplari">职业组</string>
-    <string name="admin_meslek_gruplari_desc">管理行业选择列表和职业组。</string>
-    <string name="footer_title">企业信息</string>
-    <string name="footer_info">© 2024 Global Trade 平台。保留所有权利。\n由 MGA Creative Works 开发。\n联系方式：info@globaltrade.com</string>
-    <string name="nav_b2b_desc">扩展您的全球网络并寻找新的合作伙伴</string>
-    <string name="economic_news_desc">来自世界各地的最新经济和贸易新闻</string>
-    <string name="product_description_label">产品描述</string>
-    <string name="no_description">暂无描述。</string>
-    <string name="close_button">关闭</string>
-    <string name="login_text">登录</string>
-    <string name="admin_panel_title">管理面板（记录管理）</string>
-    <string name="admin_panel_desc">管理系统登录权限，从 Excel 批量导入成员。</string>
-    <string name="nav_education_desc">管理平台培训和您的证书。</string>
-    <string name="welcome_member">成员</string>
+    <string name="new_label_title">æ–°å¢</string>
+    <string name="economic_news">ç»æµæ–°é—»</string>
+    <string name="empty_news">ç©º</string>
+    <string name="quick_search">å¿«é€Ÿæœç´¢</string>
+    <string name="search_sector">è¡Œä¸š</string>
+    <string name="search_company">å…¬å¸</string>
+    <string name="marketplace_external_disclaimer">äº¤æ˜“åœ¨å¤–éƒ¨å¹³å°è¿›è¡Œã€‚Global Trade ä¸å¯¹è¿™äº›äº¤æ˜“è´Ÿè´£ã€‚</string>
+    <string name="marketplace_price_notice">ä»·æ ¼å’Œåº“å­˜çŠ¶å†µåœ¨å¤–éƒ¨å¹³å°å¯èƒ½ä¼šæœ‰å˜åŒ–ã€‚</string>
+    <string name="admin_meslek_gruplari">èŒä¸šç»„</string>
+    <string name="admin_meslek_gruplari_desc">ç®¡ç†è¡Œä¸šé€‰æ‹©åˆ—è¡¨å’ŒèŒä¸šç»„ã€‚</string>
+    <string name="footer_title">ä¼ä¸šä¿¡æ¯</string>
+    <string name="footer_info">Â© 2024 Global Trade å¹³å°ã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚\nç”± MGA Creative Works å¼€å‘ã€‚\nè”ç³»æ–¹å¼ï¼šinfo@globaltrade.com</string>
+    <string name="nav_b2b_desc">æ‰©å±•æ‚¨çš„å…¨çƒç½‘ç»œå¹¶å¯»æ‰¾æ–°çš„åˆä½œä¼™ä¼´</string>
+    <string name="economic_news_desc">æ¥è‡ªä¸–ç•Œå„åœ°çš„æœ€æ–°ç»æµå’Œè´¸æ˜“æ–°é—»</string>
+    <string name="product_description_label">äº§å“æè¿°</string>
+    <string name="no_description">æš‚æ— æè¿°ã€‚</string>
+    <string name="close_button">å…³é—­</string>
+    <string name="login_text">ç™»å½•</string>
+    <string name="admin_panel_title">ç®¡ç†é¢æ¿ï¼ˆè®°å½•ç®¡ç†ï¼‰</string>
+    <string name="admin_panel_desc">ç®¡ç†ç³»ç»Ÿç™»å½•æƒé™ï¼Œä» Excel æ‰¹é‡å¯¼å…¥æˆå‘˜ã€‚</string>
+    <string name="nav_education_desc">ç®¡ç†å¹³å°åŸ¹è®­å’Œæ‚¨çš„è¯ä¹¦ã€‚</string>
+    <string name="welcome_member">æˆå‘˜</string>
 </resources>
+
