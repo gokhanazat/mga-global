@@ -384,7 +384,7 @@ fun AppScaffoldContent(
                                     Icon(
                                         imageVector = Icons.Default.ShoppingCart,
                                         contentDescription = "Sepetim",
-                                        tint = Color.White
+                                        tint = MaterialTheme.colorScheme.onBackground
                                     )
                                 }
                             }
@@ -392,14 +392,18 @@ fun AppScaffoldContent(
                             
                             if (userRole != null) {
                                 IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
-                                    Icon(Icons.Default.Person, contentDescription = "Profile")
+                                    Icon(
+                                        imageVector = Icons.Default.Person,
+                                        contentDescription = "Profile",
+                                        tint = MaterialTheme.colorScheme.onBackground
+                                    )
                                 }
                             } else {
                                 IconButton(onClick = { navController.navigate(Screen.Login.route) }) {
                                     Icon(
                                         imageVector = Icons.Default.Person,
                                         contentDescription = "Login",
-                                        tint = Color.White
+                                        tint = MaterialTheme.colorScheme.onBackground
                                     )
                                 }
                             }
@@ -407,9 +411,9 @@ fun AppScaffoldContent(
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = DarkNavy,
-                        titleContentColor = Color.White,
-                        navigationIconContentColor = Color.White,
-                        actionIconContentColor = Color.White
+                        titleContentColor = MaterialTheme.colorScheme.onBackground,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+                        actionIconContentColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
             }

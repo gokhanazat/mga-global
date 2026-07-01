@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import kotlinx.coroutines.launch
 import com.mgacreative.mgaglobal.core.domain.showroom.ProductService
 import com.mgacreative.mgaglobal.core.domain.showroom.ShowroomProduct
+import com.mgacreative.mgaglobal.core.domain.showroom.CartManager
 import com.mgacreative.mgaglobal.core.auth.SessionManager
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +52,8 @@ fun ShowroomScreen(
     onBackClick: () -> Unit = {},
     onProductClick: (String) -> Unit = {},
     onEditClick: (String) -> Unit = {},
-    onCompanyClick: (String) -> Unit = {}
+    onCompanyClick: (String) -> Unit = {},
+    onCartClick: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val productService = remember { ProductService() }
@@ -62,6 +64,8 @@ fun ShowroomScreen(
     var isLoading by remember { mutableStateOf(true) }
     var selectedProductForDetail by remember { mutableStateOf<ShowroomProduct?>(null) }
     val currentUserId = SessionManager.getUserId()
+    
+    val cartItems by CartManager.cartState.collectAsState()
     
     var isSelectionMode by remember { mutableStateOf(false) }
     var selectedProductIds by remember { mutableStateOf(setOf<String>()) }
@@ -88,7 +92,7 @@ fun ShowroomScreen(
         isLoading = false
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color(0xFF0F172A))) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             containerColor = Color.Transparent,
@@ -108,6 +112,30 @@ fun ShowroomScreen(
                         }
                     },
                     actions = {
+                        // Cart Icon with Badge
+                        BadgedBox(
+                            badge = {
+                                if (cartItems.isNotEmpty()) {
+                                    Badge(
+                                        containerColor = MaterialTheme.colorScheme.error,
+                                        contentColor = Color.White
+                                    ) {
+                                        Text(cartItems.sumOf { it.quantity }.toString(), fontSize = 10.sp)
+                                    }
+                                }
+                            },
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            IconButton(onClick = onCartClick) {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = "Sepetim",
+                                    tint = MaterialTheme.colorScheme.onBackground,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+
                         // PDF Export Icon - NO IF CHECK, ALWAYS VISIBLE NEXT TO "URUN SEC"
                         IconButton(
                             onClick = {
@@ -129,26 +157,26 @@ fun ShowroomScreen(
                             Icon(
                                 imageVector = Icons.Default.PictureAsPdf,
                                 contentDescription = "PDF İndir",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
 
                         if (isSelectionMode) {
                             IconButton(onClick = { isSelectionMode = false; selectedProductIds = emptySet() }) { 
-                                Icon(Icons.Default.Close, contentDescription = "Vazgeç", tint = Color.White) 
+                                Icon(Icons.Default.Close, contentDescription = "Vazgeç", tint = MaterialTheme.colorScheme.onBackground) 
                             }
                         } else {
                             TextButton(onClick = { isSelectionMode = true }) { 
-                                Text("Ürün Seç", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp) 
+                                Text("Ürün Seç", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 14.sp) 
                             }
                         }
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color(0xFF0F172A), 
-                        titleContentColor = Color.White, 
-                        navigationIconContentColor = Color.White, 
-                        actionIconContentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.background, 
+                        titleContentColor = MaterialTheme.colorScheme.onBackground, 
+                        navigationIconContentColor = MaterialTheme.colorScheme.onBackground, 
+                        actionIconContentColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
             },
@@ -167,7 +195,7 @@ fun ShowroomScreen(
             ) {
                 BoxWithConstraints(modifier = Modifier.widthIn(max = 1200.dp).fillMaxHeight()) {
                     if (isLoading) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Color(0xFF0F172A)) }
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = MaterialTheme.colorScheme.primary) }
                     } else if (products.isEmpty()) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { 
                             Text("Henüz ürün bulunmuyor.", color = Color.Gray) 
@@ -211,6 +239,7 @@ fun ShowroomScreen(
     selectedProductForDetail?.let { product ->
         ProductDetailDialog(
             product = product,
+            currentUserId = currentUserId,
             onDismissRequest = { selectedProductForDetail = null },
             onCompanyClick = onCompanyClick
         )
@@ -221,6 +250,7 @@ fun ShowroomScreen(
 @Composable
 fun ProductDetailDialog(
     product: ShowroomProduct,
+    currentUserId: String,
     onDismissRequest: () -> Unit,
     onCompanyClick: ((String) -> Unit)? = null
 ) {
@@ -362,13 +392,33 @@ fun ProductDetailDialog(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Button(
-                        onClick = onDismissRequest,
-                        modifier = Modifier.fillMaxWidth().height(48.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F172A))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("Kapat", fontWeight = FontWeight.Bold)
+                        Button(
+                            onClick = {
+                                CartManager.addProduct(product, 1)
+                                onDismissRequest()
+                            },
+                            modifier = Modifier.weight(1f).height(48.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        ) {
+                            Icon(Icons.Default.AddShoppingCart, null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Sepete Ekle", fontWeight = FontWeight.Bold)
+                        }
+
+                        OutlinedButton(
+                            onClick = onDismissRequest,
+                            modifier = Modifier.weight(1f).height(48.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+                        ) {
+                            Text("Kapat", fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
             }

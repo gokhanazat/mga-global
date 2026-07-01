@@ -1,4 +1,4 @@
-﻿package com.mgacreative.mgaglobal.ui.showroom
+package com.mgacreative.mgaglobal.ui.showroom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,22 +29,25 @@ import com.mgacreative.mgaglobal.core.domain.sector.SectorService
 import com.mgacreative.mgaglobal.core.domain.showroom.ProductService
 import com.mgacreative.mgaglobal.core.domain.showroom.ShowroomProduct
 import com.mgacreative.mgaglobal.ui.components.ProductCard
+import com.mgacreative.mgaglobal.core.auth.SessionManager
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import mgaglobal.composeapp.generated.resources.*
+import com.mgacreative.mgaglobal.core.domain.showroom.CartManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainDigitalShowroomScreen(
     onBackClick: () -> Unit,
     onProductClick: (String) -> Unit,
-    onCompanyClick: (String) -> Unit
+    onCompanyClick: (String) -> Unit,
+    onCartClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val productService = remember { ProductService() }
     val companyService = remember { CompanyService() }
     val sectorService = remember { SectorService() }
     val snackbarHostState = remember { SnackbarHostState() }
+    val cartItems by CartManager.cartState.collectAsState()
 
     var products by remember { mutableStateOf<List<ShowroomProduct>>(emptyList()) }
     var sectors by remember { mutableStateOf<List<Sector>>(emptyList()) }
@@ -52,6 +55,7 @@ fun MainDigitalShowroomScreen(
     
     var isLoading by remember { mutableStateOf(true) }
     var selectedProductForDetail by remember { mutableStateOf<ShowroomProduct?>(null) }
+    val currentUserId = SessionManager.getUserId()
 
     // Filter states
     var selectedSector by remember { mutableStateOf<Sector?>(null) }
@@ -95,17 +99,35 @@ fun MainDigitalShowroomScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            Column(modifier = Modifier.background(Color(0xFF0F172A))) {
+            Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
                 CenterAlignedTopAppBar(
-                    title = { Text("Products", fontWeight = FontWeight.Bold, color = Color.White) },
+                    title = { Text("Products", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground) },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = onCartClick) {
+                            BadgedBox(
+                                badge = {
+                                    if (cartItems.isNotEmpty()) {
+                                        Badge(
+                                            containerColor = Color.Red,
+                                            contentColor = Color.White
+                                        ) { 
+                                            Text(cartItems.sumOf { it.quantity }.toString(), fontSize = 10.sp) 
+                                        }
+                                    }
+                                }
+                            ) {
+                                Icon(Icons.Default.ShoppingCart, contentDescription = "Sepetim", tint = MaterialTheme.colorScheme.onBackground)
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.Transparent,
-                        titleContentColor = Color.White
+                        titleContentColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
                 
@@ -212,6 +234,7 @@ fun MainDigitalShowroomScreen(
     selectedProductForDetail?.let { product ->
         ProductDetailDialog(
             product = product,
+            currentUserId = currentUserId,
             onDismissRequest = { selectedProductForDetail = null },
             onCompanyClick = onCompanyClick
         )
@@ -231,8 +254,9 @@ fun FilterDropdown(
     Surface(
         onClick = { onExpandChange(!expanded) },
         shape = RoundedCornerShape(12.dp),
-        color = Color.White.copy(alpha = 0.15f),
-        contentColor = Color.White,
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)),
         modifier = Modifier.fillMaxWidth().height(44.dp)
     ) {
         Row(

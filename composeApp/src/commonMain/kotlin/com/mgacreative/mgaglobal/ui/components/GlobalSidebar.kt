@@ -46,7 +46,7 @@ fun GlobalSidebar(
         modifier = modifier
             .fillMaxHeight()
             .width(280.dp)
-            .background(PrimaryAnchor)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(vertical = 32.dp)
             .verticalScroll(scrollState)
     ) {
@@ -72,14 +72,14 @@ fun GlobalSidebar(
             Column {
                 Text(
                     text = "GLOBAL TRADE",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = 1.sp
                 )
                 Text(
                     text = "THE SOVEREIGN LEDGER",
-                    color = Color.White.copy(alpha = 0.5f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.5.sp
@@ -155,8 +155,8 @@ fun GlobalSidebar(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column {
-                Text("Admin", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Text("GLOBAL PORTAL", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp)
+                Text("Admin", color = MaterialTheme.colorScheme.onSurface, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text("GLOBAL PORTAL", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), fontSize = 10.sp)
             }
         }
     }
@@ -188,13 +188,13 @@ fun SidebarNavItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = Color.White.copy(alpha = 0.7f),
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = title,
-                color = Color.White.copy(alpha = 0.9f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.sp,
@@ -218,7 +218,7 @@ fun SidebarNavItem(
                     .padding(horizontal = 12.dp)
                     .fillMaxWidth()
                     .height(36.dp),
-                color = Color.White.copy(alpha = 0.08f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Row(
@@ -230,7 +230,7 @@ fun SidebarNavItem(
                     Icon(
                         Icons.Default.Search,
                         null,
-                        tint = Color.White.copy(alpha = 0.4f),
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -238,7 +238,7 @@ fun SidebarNavItem(
                         if (searchValue.isEmpty()) {
                             Text(
                                 "Ara...",
-                                color = Color.White.copy(alpha = 0.3f),
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                                 fontSize = 11.sp
                             )
                         }
@@ -246,10 +246,10 @@ fun SidebarNavItem(
                             value = searchValue,
                             onValueChange = onSearchValueChange,
                             textStyle = androidx.compose.ui.text.TextStyle(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 11.sp
                             ),
-                            cursorBrush = SolidColor(Color.White),
+                            cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth()
                         )
