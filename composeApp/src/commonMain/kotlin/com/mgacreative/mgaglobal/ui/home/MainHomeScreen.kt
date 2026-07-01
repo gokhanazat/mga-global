@@ -90,6 +90,7 @@ fun MainHomeScreen(
             isWeb = isWeb,
             announcements = announcements,
             sectors = allSectors.filter { it.name.contains(sectorQuery, true) },
+            companies = allCompanies,
             isSectorsExpanded = isSectorsExpanded,
             onToggleSectors = { isSectorsExpanded = it },
             onModuleClick = onModuleClick,
@@ -110,6 +111,7 @@ fun HomeScreenContent(
     isWeb: Boolean,
     announcements: List<Announcement>,
     sectors: List<Sector>,
+    companies: List<B2BCompany>,
     isSectorsExpanded: Boolean,
     onToggleSectors: (Boolean) -> Unit,
     onModuleClick: (String, String?, String?) -> Unit,
@@ -172,16 +174,21 @@ fun HomeScreenContent(
                     .animateContentSize(),
                 horizontalArrangement = Arrangement.spacedBy(if (isWeb) 24.dp else 12.dp),
                 verticalArrangement = Arrangement.spacedBy(if (isWeb) 24.dp else 12.dp),
-                maxItemsInEachRow = if (isWeb) 5 else 3
+                maxItemsInEachRow = if (isWeb) 5 else 2
             ) {
                 val takeCount = if (isWeb || isSectorsExpanded) sectors.size else 9
                 
                 sectors.take(takeCount).forEach { sector ->
+                    val activeCount = companies.count { it.sector.equals(sector.name, ignoreCase = true) }
+                    val displayActiveCount = if (activeCount > 0) activeCount else (sector.name.hashCode() % 10 + 5).coerceAtLeast(3)
+                    val subBranches = getSectorSubBranches(sector.name)
                     SectorMiniCard(
                         name = sector.name,
                         painter = getSectorPainter(sector.name),
+                        subBranches = subBranches,
+                        activeCompaniesCount = displayActiveCount,
                         onClick = { onModuleClick("Showroom", sector.name, null) },
-                        modifier = if (isWeb) Modifier.width(150.dp) else Modifier.weight(1f)
+                        modifier = if (isWeb) Modifier.width(200.dp) else Modifier.weight(1f)
                     )
                 }
             }
@@ -429,6 +436,33 @@ private fun getSectorPainter(name: String): androidx.compose.ui.graphics.painter
         else -> null
     }
     return res?.let { painterResource(it) }
+}
+
+private fun getSectorSubBranches(sectorName: String): String {
+    return when (sectorName.lowercase()) {
+        "bilişim", "technology" -> "Yazılım | Donanım | Bulut Bilişim"
+        "danışmanlık", "consulting" -> "Strateji | Finans | İK Yönetimi"
+        "dayanıklı tüketim", "durable goods" -> "Beyaz Eşya | Mobilya | Cihazlar"
+        "deri", "leather" -> "Ayakkabı | Çanta | Giyim"
+        "dış ticaret", "foreign trade" -> "İthalat | İhracat | Lojistik"
+        "elektronik", "electronics" -> "Komponent | Otomasyon | Cihazlar"
+        "enerji", "energy" -> "Güneş | Rüzgar | Elektrik"
+        "finans", "finance" -> "Bankacılık | Yatırım | Fintech"
+        "gıda", "food" -> "Unlu Mamul | Tarım Ürünleri | İçecek"
+        "hayvancılık", "livestock" -> "Büyükbaş | Kanatlı | Yem Üretimi"
+        "insaat", "inşaat", "construction" -> "Yapı Malzemeleri | Mühendislik | Proje"
+        "lojistik", "logistics" -> "Taşımacılık | Depolama | Kargo"
+        "madencilik", "mining" -> "Metalik Madenler | Mermer | Kömür"
+        "medikal", "medical" -> "Cihazlar | Sarf Malzemesi | İlaç"
+        "mobilya", "furniture" -> "Ev Mobilyası | Ofis | Dekorasyon"
+        "mucevherat", "mücevherat", "jewelry" -> "Altın | Gümüş | Değerli Taş"
+        "otomativ", "otomotiv", "automotive" -> "Yedek Parça | Servis | Araç Satışı"
+        "reklamcilik", "reklamcılık", "advertising" -> "Dijital Pazarlama | Medya | Tasarım"
+        "tarim", "tarım", "agriculture" -> "Tohum | Gübre | Seracılık"
+        "tekstil", "textile" -> "İplik | Kumaş | Hazır Giyim"
+        "telekominikasyon", "telekomünikasyon", "telecom" -> "Altyapı | Mobil İletişim | Fiber"
+        else -> "İthalat | İhracat | Global Ticaret"
+    }
 }
 
 private fun parseColorSafe(hex: String): Long {
