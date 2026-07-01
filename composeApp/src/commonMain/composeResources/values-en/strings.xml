@@ -1,6 +1,6 @@
-﻿<resources>
+<resources>
     <!-- App & Navigation -->
-    <string name="app_name">MGA GLOBAL</string>
+    <string name="app_name">GLOBAL TRADE</string>
     <string name="nav_home">Home</string>
     <string name="nav_showroom">Digital Showroom</string>
     <string name="nav_b2b">B2B Meeting</string>

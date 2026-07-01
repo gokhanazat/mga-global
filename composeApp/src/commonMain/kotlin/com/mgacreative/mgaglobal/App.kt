@@ -337,7 +337,7 @@ fun AppScaffoldContent(
                                     modifier = Modifier.size(32.dp)
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
-                                Text("MGA GLOBAL", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text("GLOBAL TRADE", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     },
