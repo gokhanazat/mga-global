@@ -36,6 +36,7 @@ fun GlobalSidebar(
     onCompanyQueryChange: (String) -> Unit,
     sectorQuery: String,
     onSectorQueryChange: (String) -> Unit,
+    cartItemCount: Int = 0,
     onNavItemClick: (String) -> Unit,
     onItsoWebsiteClick: () -> Unit
 ) {
@@ -70,14 +71,10 @@ fun GlobalSidebar(
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-                            append("ITSO")
-                        }
-                        append(" Global")
-                    },
+                    text = "GLOBAL TRADE",
                     color = Color.White,
                     fontSize = 20.sp,
+                    fontWeight = FontWeight.ExtraBold,
                     letterSpacing = 1.sp
                 )
                 Text(
@@ -130,10 +127,13 @@ fun GlobalSidebar(
         Spacer(modifier = Modifier.height(16.dp))
 
         SidebarNavItem(
-            title = "İTSO",
-            icon = Icons.Default.Language,
-            onClick = onItsoWebsiteClick
+            title = "SEPETİM",
+            icon = Icons.Default.ShoppingCart,
+            badgeCount = cartItemCount,
+            onClick = { onNavItemClick("Cart") }
         )
+
+        // İTSO Link removed as requested
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -155,7 +155,7 @@ fun GlobalSidebar(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column {
-                Text("ITSO Admin", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text("Admin", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 Text("GLOBAL PORTAL", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp)
             }
         }
@@ -169,6 +169,7 @@ fun SidebarNavItem(
     hasSearch: Boolean = false,
     searchValue: String = "",
     onSearchValueChange: (String) -> Unit = {},
+    badgeCount: Int = 0,
     onClick: () -> Unit
 ) {
     Column(
@@ -196,8 +197,18 @@ fun SidebarNavItem(
                 color = Color.White.copy(alpha = 0.9f),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp
+                letterSpacing = 1.sp,
+                modifier = Modifier.weight(1f)
             )
+            if (badgeCount > 0) {
+                Badge(
+                    containerColor = Color.Red,
+                    contentColor = Color.White,
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
+                    Text(badgeCount.toString(), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                }
+            }
         }
 
         if (hasSearch) {

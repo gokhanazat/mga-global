@@ -48,6 +48,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.clip
 import kotlinx.coroutines.launch
+import androidx.compose.material.icons.filled.ShoppingCart
+import com.mgacreative.mgaglobal.core.domain.showroom.CartManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +65,9 @@ fun App(initialLanguage: String = "tr") {
 
     var companyQuery by remember { mutableStateOf("") }
     var sectorQuery by remember { mutableStateOf("") }
+
+    val cartItems by CartManager.cartState.collectAsState()
+    val cartItemCount = remember(cartItems) { cartItems.sumOf { it.quantity } }
 
     LaunchedEffect(Unit) {
         val saved = getCurrentAppLanguage() ?: initialLanguage
@@ -91,6 +96,8 @@ fun App(initialLanguage: String = "tr") {
     val isMainShowroom = currentDestination?.route == Screen.MainDigitalShowroom.route
     val isProductDetail = currentDestination?.route?.startsWith("product_detail/") == true
     val isEconomicNews = currentDestination?.route?.startsWith("economic_news") == true
+    val isCart = currentDestination?.route == Screen.Cart.route
+    val isOrdersReport = currentDestination?.route == Screen.OrdersReport.route
     val userRole by PermissionManager.currentUserRole.collectAsState()
     
     // Dynamic Status Bar
@@ -168,11 +175,13 @@ fun App(initialLanguage: String = "tr") {
                                     onCompanyQueryChange = { companyQuery = it },
                                     sectorQuery = sectorQuery,
                                     onSectorQueryChange = { sectorQuery = it },
+                                    cartItemCount = cartItemCount,
                                     onNavItemClick = { item ->
                                         when(item) {
                                             "Consultancy", "Education" -> navController.navigate(Screen.Login.route)
                                             "Companies" -> navController.navigate(Screen.CompanyMeeting.route)
                                             "Sectors" -> navController.navigate(Screen.Home.route)
+                                            "Cart" -> navController.navigate(Screen.Cart.route)
                                             else -> { /* Handle other items */ }
                                         }
                                     },
@@ -223,12 +232,14 @@ fun App(initialLanguage: String = "tr") {
                                             onCompanyQueryChange = { companyQuery = it },
                                             sectorQuery = sectorQuery,
                                             onSectorQueryChange = { sectorQuery = it },
+                                            cartItemCount = cartItemCount,
                                             onNavItemClick = { item ->
                                                 scope.launch { drawerState.close() }
                                                 when(item) {
                                                     "Consultancy", "Education" -> navController.navigate(Screen.Login.route)
                                                     "Companies" -> navController.navigate(Screen.CompanyMeeting.route)
                                                     "Sectors" -> navController.navigate(Screen.Home.route)
+                                                    "Cart" -> navController.navigate(Screen.Cart.route)
                                                     else -> { /* Handle others */ }
                                                 }
                                             },
@@ -302,10 +313,12 @@ fun AppScaffoldContent(
     onMenuClick: (() -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
+    val isCart = currentDestination?.route == Screen.Cart.route
+    val isOrdersReport = currentDestination?.route == Screen.OrdersReport.route
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            val noGlobalTopBarScreens = isLogin || isAdminScreen
+            val noGlobalTopBarScreens = isLogin || isAdminScreen || isShowroom || isMainShowroom || isProductDetail || isCart || isOrdersReport
 
             if (!noGlobalTopBarScreens || isWeb || isHome) {
                 CenterAlignedTopAppBar(
@@ -354,6 +367,29 @@ fun AppScaffoldContent(
                                 Spacer(modifier = Modifier.width(16.dp))
                             }
                             
+                            val cartItemsCountFlow by CartManager.cartState.collectAsState()
+                            IconButton(onClick = { navController.navigate(Screen.Cart.route) }) {
+                                BadgedBox(
+                                    badge = {
+                                        if (cartItemsCountFlow.isNotEmpty()) {
+                                            Badge(
+                                                containerColor = Color.Red,
+                                                contentColor = Color.White
+                                            ) {
+                                                Text(cartItemsCountFlow.sumOf { it.quantity }.toString(), fontSize = 10.sp)
+                                            }
+                                        }
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.ShoppingCart,
+                                        contentDescription = "Sepetim",
+                                        tint = Color.White
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            
                             if (userRole != null) {
                                 IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
                                     Icon(Icons.Default.Person, contentDescription = "Profile")
@@ -383,7 +419,8 @@ fun AppScaffoldContent(
                                    isCompanyProfile || isCompanySettings || 
                                    isProductManagement || isEditProduct || 
                                    isShowroom || isMainShowroom || 
-                                   isProductDetail || isEconomicNews
+                                   isProductDetail || isEconomicNews ||
+                                   isCart || isOrdersReport
             
             // Web'de sidebar olduğu için bottom bar'ı sadece mobilde gösteriyoruz
             if (!isWeb && !noBottomBarScreens && userRole != null) {
