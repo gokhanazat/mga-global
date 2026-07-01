@@ -71,7 +71,7 @@ fun LoginScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "MGA GLOBAL",
+                        text = "GLOBAL TRADE",
                         style = MaterialTheme.typography.displaySmall,
                         color = Color.White,
                         fontWeight = FontWeight.Black,
