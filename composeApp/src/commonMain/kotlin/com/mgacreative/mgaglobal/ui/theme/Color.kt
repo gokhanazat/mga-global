@@ -1,19 +1,19 @@
-﻿package com.mgacreative.mgaglobal.ui.theme
+package com.mgacreative.mgaglobal.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Sovereign Ledger Palette
-val PrimaryAnchor = Color(0xFF070D1E)
-val PrimaryContainer = Color(0xFF1D2335)
-val SovereignSurface = Color(0xFFF9F9F9)
-val SovereignContainerLow = Color(0xFFF3F3F3)
-val SovereignContainerLowest = Color(0xFFFFFFFF)
-val SovereignText = Color(0xFF1A1C1C)
+// Sovereign Ledger Palette - Rebranded to Professional Light Corporate Navy Theme
+val PrimaryAnchor = Color(0xFF0F294A) // Deep Corporate Navy Blue
+val PrimaryContainer = Color(0xFF1E40AF) // Royal Corporate Blue
+val SovereignSurface = Color(0xFFF8FAFC) // Clean modern slate background
+val SovereignContainerLow = Color(0xFFF1F5F9) // Slate 100 card outlines / background blocks
+val SovereignContainerLowest = Color(0xFFFFFFFF) // White card surface
+val SovereignText = Color(0xFF0F172A) // Professional Slate 900 text color
 
 // Legacy Colors (kept for compatibility)
-val DarkNavy = Color(0xFF0D1B2A)
-val DeepNavy = Color(0xFF1B263B)
-val LightGray = Color(0xFFF8F9FA)
+val DarkNavy = Color(0xFF0F294A) // Matching Deep Corporate Navy instead of almost black
+val DeepNavy = Color(0xFF1E3A8A)
+val LightGray = Color(0xFFF8FAFC)
 
 // Material 3 Color Scheme Mapping
 val Primary = PrimaryAnchor
